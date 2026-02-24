@@ -513,7 +513,7 @@ async function lookupQzt(auto=false){
 
   // ⚠️ 把下面的 URL 换成你的 Vercel 网址，例如:
   // https://lucky-proxy.vercel.app/api/search
-  const PROXY_URL = 'vercel-proxy-chi-coral.vercel.app/api/search';
+  const PROXY_URL = 'https://vercel-proxy-chi-coral.vercel.app/api/search';
 
   try {
     const resp=await fetch(`${PROXY_URL}?num=${num}`,{signal:AbortSignal.timeout(12000)});
