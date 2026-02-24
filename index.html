@@ -1,655 +1,1322 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>幸运计算 Lucky Calc</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Noto+Serif+SC:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-:root{--gold:#FFD700;--dg:#B8860B;--red:#CC0000;--bred:#FF2020;--dark:#0a0505;--cbg:rgba(20,5,5,0.92);--grn:#00ff88}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--dark);color:var(--gold);font-family:'Noto Serif SC',serif;min-height:100vh;overflow-x:hidden}
-.bgl{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(180,0,0,.12),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(255,215,0,.08),transparent 50%),#0a0505}
-.bgp{position:fixed;inset:0;z-index:0;opacity:.04;background-image:repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);background-size:30px 30px}
-.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.particle{position:absolute;animation:floatUp linear infinite;opacity:0}
-@keyframes floatUp{0%{opacity:0;transform:translateY(100vh) rotate(0)}10%{opacity:.7}90%{opacity:.5}100%{opacity:0;transform:translateY(-10vh) rotate(720deg)}}
-.screen{display:none;position:relative;z-index:1;min-height:100vh;padding:20px}
-.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>幸运计算 Lucky Calc</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPCEtLSBCYWNrZ3JvdW5kIGNpcmNsZSAtLT4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIzMiIgZmlsbD0iIzBhMDUwNSIvPgogIDwhLS0gT3V0ZXIgZ29sZCByaW5nIC0tPgogIDxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkQ3MDAiIHN0cm9rZS13aWR0aD0iMiIvPgogIDwhLS0gUmVkIGlubmVyIGNpcmNsZSAtLT4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyNCIgZmlsbD0iI0NDMDAwMCIgb3BhY2l0eT0iMC44NSIvPgogIDwhLS0gTHVja3kgY2hhcmFjdGVyIOi/kCAtLT4KICA8dGV4dCB4PSIzMiIgeT0iNDEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIyNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNGRkQ3MDAiPui/kDwvdGV4dD4KICA8IS0tIFNtYWxsIGdvbGQgZG90cyBhdCBjb3JuZXJzIC0tPgogIDxjaXJjbGUgY3g9IjMyIiBjeT0iOCIgIHI9IjIuNSIgZmlsbD0iI0ZGRDcwMCIvPgogIDxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjIuNSIgZmlsbD0iI0ZGRDcwMCIvPgogIDxjaXJjbGUgY3g9IjgiICBjeT0iMzIiIHI9IjIuNSIgZmlsbD0iI0ZGRDcwMCIvPgogIDxjaXJjbGUgY3g9IjU2IiBjeT0iMzIiIHI9IjIuNSIgZmlsbD0iI0ZGRDcwMCIvPgo8L3N2Zz4=" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPCEtLSBCYWNrZ3JvdW5kIGNpcmNsZSAtLT4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIzMiIgZmlsbD0iIzBhMDUwNSIvPgogIDwhLS0gT3V0ZXIgZ29sZCByaW5nIC0tPgogIDxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkQ3MDAiIHN0cm9rZS13aWR0aD0iMiIvPgogIDwhLS0gUmVkIGlubmVyIGNpcmNsZSAtLT4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyNCIgZmlsbD0iI0NDMDAwMCIgb3BhY2l0eT0iMC44NSIvPgogIDwhLS0gTHVja3kgY2hhcmFjdGVyIOi/kCAtLT4KICA8dGV4dCB4PSIzMiIgeT0iNDEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIyNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNGRkQ3MDAiPui/kDwvdGV4dD4KICA8IS0tIFNtYWxsIGdvbGQgZG90cyBhdCBjb3JuZXJzIC0tPgogIDxjaXJjbGUgY3g9IjMyIiBjeT0iOCIgIHI9IjIuNSIgZmlsbD0iI0ZGRDcwMCIvPgogIDxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjIuNSIgZmlsbD0iI0ZGRDcwMCIvPgogIDxjaXJjbGUgY3g9IjgiICBjeT0iMzIiIHI9IjIuNSIgZmlsbD0iI0ZGRDcwMCIvPgogIDxjaXJjbGUgY3g9IjU2IiBjeT0iMzIiIHI9IjIuNSIgZmlsbD0iI0ZGRDcwMCIvPgo8L3N2Zz4=" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Noto+Serif+SC:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
-/* HOME */
-.home-title{text-align:center;margin-bottom:35px}
-.home-title .cn{font-size:clamp(3rem,10vw,6rem);font-weight:700;color:var(--gold);text-shadow:0 0 30px rgba(255,215,0,.6),0 0 80px rgba(255,215,0,.2);display:block;animation:gPulse 3s ease-in-out infinite}
-.home-title .en{font-family:'Cinzel Decorative',cursive;font-size:clamp(.7rem,2vw,1.1rem);color:var(--dg);letter-spacing:8px;display:block;margin-top:8px}
-@keyframes gPulse{0%,100%{text-shadow:0 0 30px rgba(255,215,0,.6),0 0 80px rgba(255,215,0,.2)}50%{text-shadow:0 0 50px rgba(255,215,0,.9),0 0 100px rgba(255,215,0,.4),0 0 150px rgba(255,50,0,.2)}}
-.buy-reminder{background:linear-gradient(135deg,rgba(204,0,0,.3),rgba(255,50,0,.15));border:1px solid var(--red);border-radius:4px;padding:12px 20px;text-align:center;margin-bottom:22px;font-size:.9rem;animation:rPulse 2s ease-in-out infinite;max-width:620px;width:100%;display:none}
-.buy-reminder.show{display:block}
-@keyframes rPulse{0%,100%{box-shadow:0 0 10px rgba(204,0,0,.3)}50%{box-shadow:0 0 25px rgba(255,50,0,.6),0 0 50px rgba(255,50,0,.2)}}
-.date-bar{text-align:center;margin-bottom:15px;font-size:.8rem;color:rgba(255,215,0,.5);letter-spacing:2px}
-.divider{width:200px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--red),var(--gold),transparent);margin:0 auto 28px;position:relative}
-.divider::after{content:'♦';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--dark);padding:0 10px;color:var(--gold);font-size:1rem}
-.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,250px));gap:18px;justify-content:center;max-width:820px;width:100%}
-.menu-card{background:var(--cbg);border:1px solid rgba(255,215,0,.25);border-radius:4px;padding:28px 20px;text-align:center;cursor:pointer;position:relative;overflow:hidden;transition:all .3s}
-.menu-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,215,0,.05),transparent 60%);opacity:0;transition:opacity .3s}
-.menu-card::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,215,0,.1),transparent);transition:left .5s}
-.menu-card:hover{border-color:var(--gold);transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 30px rgba(255,215,0,.1)}
-.menu-card:hover::before{opacity:1}
-.menu-card:hover::after{left:100%}
-.card-icon{font-size:2.8rem;display:block;margin-bottom:10px}
-.card-title-cn{font-size:1.3rem;font-weight:700;color:var(--gold);display:block}
-.card-title-en{font-family:'Cinzel Decorative',cursive;font-size:.58rem;color:var(--dg);letter-spacing:3px;display:block;margin-top:4px}
-.card-desc{font-size:.78rem;color:rgba(255,215,0,.5);margin-top:10px;line-height:1.6}
-.cd{position:absolute;width:15px;height:15px;border-color:var(--gold);border-style:solid;opacity:.4}
-.cd.tl{top:7px;left:7px;border-width:2px 0 0 2px}.cd.tr{top:7px;right:7px;border-width:2px 2px 0 0}.cd.bl{bottom:7px;left:7px;border-width:0 0 2px 2px}.cd.br{bottom:7px;right:7px;border-width:0 2px 2px 0}
+  <!-- ============================================================
+       CSS
+  ============================================================ -->
+  <style>
+    /* ---------- Variables ---------- */
+    :root {
+      --gold:     #FFD700;
+      --gold-dim: #B8860B;
+      --red:      #CC0000;
+      --red-bright: #FF2020;
+      --dark:     #0a0505;
+      --panel:    rgba(20, 5, 5, 0.92);
+      --green:    #00ff88;
+    }
 
-/* PAGE SHARED */
-.page-header{width:100%;max-width:520px;display:flex;align-items:center;gap:15px;margin-bottom:22px}
-.back-btn{background:transparent;border:1px solid rgba(255,215,0,.3);color:var(--gold);padding:8px 16px;cursor:pointer;font-family:'Noto Serif SC',serif;font-size:.9rem;transition:all .2s;border-radius:2px}
-.back-btn:hover{background:rgba(255,215,0,.1);border-color:var(--gold)}
-.page-title{font-size:1.4rem;font-weight:700;color:var(--gold);flex:1;text-align:center}
+    /* ---------- Reset ---------- */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* CALC */
-.calc-wrap{background:var(--cbg);border:1px solid rgba(255,215,0,.2);border-radius:4px;padding:22px;width:100%;max-width:340px;box-shadow:0 30px 60px rgba(0,0,0,.7)}
-.calc-display{background:#050a03;border:1px solid rgba(0,255,136,.2);border-radius:2px;padding:14px 18px;text-align:right;margin-bottom:16px;min-height:76px;display:flex;flex-direction:column;justify-content:flex-end}
-.calc-display .expr{font-family:'Share Tech Mono',monospace;font-size:.78rem;color:rgba(0,255,136,.4);min-height:18px;word-break:break-all}
-.calc-display .result{font-family:'Share Tech Mono',monospace;font-size:2rem;color:var(--grn);text-shadow:0 0 20px rgba(0,255,136,.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.kbd-hint{font-size:.68rem;color:rgba(255,215,0,.3);text-align:center;margin-bottom:10px;letter-spacing:1px}
-.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
-.calc-btn{padding:16px 8px;border:1px solid rgba(255,215,0,.15);background:rgba(255,215,0,.04);color:var(--gold);font-size:1.05rem;font-family:'Share Tech Mono',monospace;cursor:pointer;border-radius:2px;transition:all .1s;user-select:none}
-.calc-btn:hover{background:rgba(255,215,0,.12);border-color:rgba(255,215,0,.4)}
-.calc-btn.pressed,.calc-btn:active{transform:scale(.94);background:rgba(255,215,0,.2)}
-.calc-btn.op{color:var(--bred);border-color:rgba(204,0,0,.2)}
-.calc-btn.op:hover{background:rgba(204,0,0,.12);border-color:var(--bred)}
-.calc-btn.eq{background:linear-gradient(135deg,var(--red),#880000);color:var(--gold);border-color:var(--red);font-size:1.2rem;box-shadow:0 4px 15px rgba(204,0,0,.3)}
-.calc-btn.eq:hover{background:linear-gradient(135deg,#ff2020,var(--red))}
-.calc-btn.clear{color:var(--bred)}
-.span2{grid-column:span 2}
+    body {
+      background: var(--dark);
+      color: var(--gold);
+      font-family: 'Noto Serif SC', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* LUCKY 4D */
-.lucky-wrap{background:var(--cbg);border:1px solid rgba(255,215,0,.2);border-radius:4px;padding:22px;width:100%;max-width:480px;box-shadow:0 30px 60px rgba(0,0,0,.7)}
-.lucky-display{background:#05050a;border:1px solid rgba(255,215,0,.18);border-radius:4px;padding:22px 16px;text-align:center;margin-bottom:16px;min-height:115px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px}
-.lucky-number{font-family:'Share Tech Mono',monospace;font-size:3.8rem;font-weight:700;color:var(--gold);letter-spacing:10px;text-shadow:0 0 30px rgba(255,215,0,.7),0 0 60px rgba(255,215,0,.3);animation:nReveal .3s ease}
-@keyframes nReveal{0%{transform:scale(1.3);opacity:0}100%{transform:scale(1);opacity:1}}
-.lucky-number.rolling{color:rgba(255,215,0,.4)}
-.lucky-blessing{font-size:.88rem;color:rgba(255,215,0,.75);line-height:1.8;text-align:center;border-top:1px solid rgba(255,215,0,.1);padding-top:10px;width:100%;min-height:44px}
-.lucky-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
-.lucky-btn{padding:13px;border:1px solid rgba(255,215,0,.3);background:rgba(255,215,0,.06);color:var(--gold);font-family:'Noto Serif SC',serif;font-size:.88rem;cursor:pointer;border-radius:2px;transition:all .2s}
-.lucky-btn:hover{background:rgba(255,215,0,.15);border-color:var(--gold)}
-.lucky-btn.big{grid-column:span 2;background:linear-gradient(135deg,var(--red),#880000);border-color:var(--red);font-size:.95rem;padding:15px}
-.lucky-btn.big:hover{background:linear-gradient(135deg,#ff2020,var(--red))}
-.multi-wrap{display:none;margin-bottom:13px}
-.multi-label{font-size:.72rem;color:rgba(255,215,0,.5);margin-bottom:7px;letter-spacing:2px}
-.multi-nums{display:flex;flex-wrap:wrap;gap:7px}
-.multi-num{background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.2);border-radius:4px;padding:9px 13px;font-family:'Share Tech Mono',monospace;font-size:1.25rem;color:var(--gold);letter-spacing:5px;cursor:pointer;transition:all .2s}
-.multi-num:hover{border-color:var(--gold);background:rgba(255,215,0,.15)}
+    /* ---------- Background ---------- */
+    .bg-gradient {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(180,0,0,.12), transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(255,215,0,.08), transparent 50%),
+        #0a0505;
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; opacity: .04;
+      background-image: repeating-linear-gradient(
+        45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%
+      );
+      background-size: 30px 30px;
+    }
 
-/* 千字图 lookup section */
-.lookup-section{border-top:1px solid rgba(255,215,0,.1);padding-top:16px;margin-top:4px}
-.ls-title{font-size:.82rem;color:rgba(255,215,0,.6);letter-spacing:2px;margin-bottom:8px}
-.ls-desc{font-size:.74rem;color:rgba(255,215,0,.4);margin-bottom:10px;line-height:1.5}
-.ls-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
-.ls-input{width:120px;padding:11px 10px;background:rgba(0,0,0,.4);border:1px solid rgba(255,215,0,.2);color:var(--gold);font-family:'Share Tech Mono',monospace;font-size:1.6rem;text-align:center;letter-spacing:8px;border-radius:2px;flex-shrink:0}
-.ls-input:focus{outline:none;border-color:var(--gold)}
-.ls-input::placeholder{color:rgba(255,215,0,.2);letter-spacing:3px;font-size:1rem}
-.use-lucky-btn{font-size:.72rem;color:rgba(255,215,0,.5);cursor:pointer;border:1px solid rgba(255,215,0,.15);border-radius:2px;padding:6px 10px;background:rgba(255,215,0,.04);transition:all .2s;white-space:nowrap}
-.use-lucky-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.08)}
+    /* ---------- Particles ---------- */
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .particle  { position: absolute; opacity: 0; animation: floatUp linear infinite; }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+      10%  { opacity: .7; }
+      90%  { opacity: .5; }
+      100% { opacity: 0; transform: translateY(-10vh) rotate(720deg); }
+    }
 
-/* 千字图 result card */
-.qzt-card{background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.2);border-radius:4px;padding:16px;margin-bottom:12px;text-align:center;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;display:none}
-.qzt-card.show{display:flex}
-.qzt-label{font-size:.65rem;color:rgba(255,215,0,.35);letter-spacing:3px;text-transform:uppercase}
-.qzt-cn{font-size:1.8rem;font-weight:700;color:var(--gold);letter-spacing:6px;text-shadow:0 0 20px rgba(255,215,0,.4)}
-.qzt-en{font-size:.9rem;color:rgba(255,215,0,.6);letter-spacing:2px;text-transform:capitalize}
-.qzt-num{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:rgba(255,215,0,.3);margin-top:2px}
-.qzt-loading{font-size:.85rem;color:rgba(255,215,0,.4);padding:20px 0;display:none}
-.qzt-err{font-size:.8rem;color:rgba(255,120,120,.6);padding:16px 0;display:none}
+    /* ---------- Lanterns ---------- */
+    .lantern      { position: fixed; z-index: 0; pointer-events: none; }
+    .lantern.left { top: 0; left: 20px; }
+    .lantern.right{ top: 0; right: 20px; }
+    .lantern svg  { animation: swing 4s ease-in-out infinite; transform-origin: top center; }
+    .lantern.right svg { animation-delay: -2s; }
+    @keyframes swing { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
 
-.ls-btns{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:10px}
-.ls-search-btn{padding:12px;border:1px solid rgba(255,215,0,.3);background:rgba(255,215,0,.06);color:var(--gold);font-family:'Noto Serif SC',serif;font-size:.88rem;cursor:pointer;border-radius:2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
-.ls-search-btn:hover{background:rgba(255,215,0,.15);border-color:var(--gold)}
+    /* ---------- Screen system ---------- */
+    .screen        { display: none; position: relative; z-index: 1; min-height: 100vh; padding: 20px; }
+    .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-.ext-links-label{font-size:.7rem;color:rgba(255,215,0,.35);margin-bottom:7px;letter-spacing:1px}
-.ext-links{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
-.ext-btn{padding:9px 5px;border:1px solid rgba(255,215,0,.18);background:rgba(255,215,0,.03);color:var(--gold);font-size:.7rem;cursor:pointer;border-radius:2px;transition:all .2s;text-decoration:none;text-align:center;display:flex;flex-direction:column;gap:3px;align-items:center}
-.ext-btn:hover{border-color:var(--gold);background:rgba(255,215,0,.08)}
-.ext-btn .ei{font-size:1.1rem}
-.ext-btn .en2{font-weight:700;font-size:.75rem}
-.ext-btn .ed{font-size:.6rem;color:rgba(255,215,0,.4)}
-.ext-note{font-size:.65rem;color:rgba(255,215,0,.25);text-align:center;margin-top:7px;line-height:1.5}
+    /* ---------- Shared components ---------- */
+    .page-header {
+      width: 100%; max-width: 520px;
+      display: flex; align-items: center; gap: 15px;
+      margin-bottom: 22px;
+    }
+    .btn-back {
+      background: transparent;
+      border: 1px solid rgba(255,215,0,.3);
+      color: var(--gold);
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: 'Noto Serif SC', serif;
+      font-size: .9rem;
+      border-radius: 2px;
+      transition: all .2s;
+    }
+    .btn-back:hover { background: rgba(255,215,0,.1); border-color: var(--gold); }
 
-/* NIU NIU */
-.niuniu-wrap{background:var(--cbg);border:1px solid rgba(255,215,0,.2);border-radius:4px;padding:22px;width:100%;max-width:520px;box-shadow:0 30px 60px rgba(0,0,0,.7)}
-.nn-inst{background:rgba(255,215,0,.05);border-left:3px solid var(--gold);padding:11px 14px;margin-bottom:18px;font-size:.78rem;line-height:1.8;color:rgba(255,215,0,.7)}
-.nn-inst strong{color:var(--gold)}
-.nn-label{font-size:.83rem;color:rgba(255,215,0,.6);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.nn-label::after{content:'';flex:1;height:1px;background:rgba(255,215,0,.1)}
-.card-selector{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-.card-slot{width:60px;height:88px;border:2px dashed rgba(255,215,0,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:rgba(255,215,0,.3);background:rgba(0,0,0,.3);flex-direction:column;gap:2px}
-.card-slot:hover{border-color:var(--gold);color:var(--gold)}
-.card-slot.selected{border-color:var(--gold);border-style:solid;background:rgba(255,215,0,.05)}
-.card-slot .slot-rank{font-size:1.3rem;font-weight:700;line-height:1}
-.card-slot .slot-suit{font-size:.95rem;line-height:1}
-.card-slot.red .slot-rank,.card-slot.red .slot-suit{color:var(--bred)}
-.card-slot.black .slot-rank,.card-slot.black .slot-suit{color:#eee}
-.card-slot.special-ace{border-color:var(--gold)!important;background:rgba(255,215,0,.1)!important}
-.card-slot.special-ace .slot-rank,.card-slot.special-ace .slot-suit{color:var(--gold)}
-.picker-overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);align-items:center;justify-content:center}
-.picker-overlay.open{display:flex}
-.picker-modal{background:#1a0808;border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:18px;max-width:370px;width:90%;max-height:80vh;overflow-y:auto}
-.picker-title{font-size:.95rem;color:var(--gold);margin-bottom:13px;display:flex;justify-content:space-between;align-items:center}
-.picker-close{background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer}
-.suit-section{margin-bottom:13px}
-.suit-title{font-size:.77rem;color:rgba(255,215,0,.5);margin-bottom:7px}
-.rank-grid{display:flex;flex-wrap:wrap;gap:5px}
-.rank-btn{width:42px;height:52px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .15s;font-size:.88rem;font-weight:700}
-.rank-btn:hover{transform:scale(1.1);border-color:var(--gold)}
-.rank-btn.red-suit{color:#ff4444}
-.rank-btn.black-suit{color:#e8e8e8}
-.rank-btn .rb-suit{font-size:.75rem}
-.rank-btn.disabled{opacity:.2;pointer-events:none}
-.nn-result{margin-top:18px;background:#050505;border:1px solid rgba(255,215,0,.15);border-radius:4px;padding:18px;display:none}
-.nn-result.show{display:block}
-.r-title{font-size:.72rem;color:rgba(255,215,0,.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
-.r-score{font-size:2.4rem;font-weight:700;text-align:center;padding:8px}
-.r-score.invalid{color:rgba(255,255,255,.3)}
-.r-score.niu0{color:#aaa}
-.r-score.niu1{color:#88ff88}
-.r-score.niu9{color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,.5)}
-.r-score.niu10{color:var(--bred);text-shadow:0 0 30px rgba(255,50,0,.7);font-size:2.8rem}
-.r-score.special{color:var(--gold);animation:sGlow 1s ease-in-out infinite}
-@keyframes sGlow{0%,100%{text-shadow:0 0 20px var(--gold)}50%{text-shadow:0 0 40px var(--gold),0 0 80px rgba(255,50,0,.8),0 0 120px var(--gold)}}
-.r-detail{font-size:.78rem;color:rgba(255,215,0,.6);text-align:center;margin-top:7px}
-.split-display{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
-.split-group{text-align:center}
-.split-label{font-size:.68rem;color:rgba(255,215,0,.4);margin-bottom:5px}
-.split-cards{display:flex;gap:4px;justify-content:center}
-.mini-card{width:30px;height:44px;border-radius:3px;border:1px solid rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;background:#fff;gap:1px}
-.mini-card.red{color:var(--bred)}
-.mini-card.black{color:#111}
-.mini-card .mc-r{font-size:.75rem;line-height:1}
-.mini-card .mc-s{font-size:.65rem;line-height:1}
-.nn-ctrl{display:flex;gap:10px;margin-top:13px}
-.nn-btn{flex:1;padding:13px;border:1px solid rgba(255,215,0,.3);background:rgba(255,215,0,.06);color:var(--gold);font-family:'Noto Serif SC',serif;font-size:.92rem;cursor:pointer;border-radius:2px;transition:all .2s}
-.nn-btn:hover{background:rgba(255,215,0,.15);border-color:var(--gold)}
-.nn-btn.primary{background:linear-gradient(135deg,var(--red),#770000);border-color:var(--red);color:var(--gold)}
-.nn-btn.primary:hover{background:linear-gradient(135deg,#ff2020,var(--red))}
+    .page-title { font-size: 1.4rem; font-weight: 700; color: var(--gold); flex: 1; text-align: center; }
 
-/* LANTERNS */
-.lantern{position:fixed;z-index:0;pointer-events:none}
-.lsvg{animation:swing 4s ease-in-out infinite;transform-origin:top center}
-.lantern.left{top:0;left:20px}
-.lantern.right{top:0;right:20px}
-@keyframes swing{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
-.lantern.right .lsvg{animation-delay:-2s}
-@media(max-width:480px){.calc-btn{padding:13px 6px;font-size:.95rem}.card-slot{width:52px;height:78px}.lucky-number{font-size:3rem;letter-spacing:7px}}
-</style>
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(255,215,0,.2);
+      border-radius: 4px;
+      box-shadow: 0 30px 60px rgba(0,0,0,.7);
+    }
+
+    .divider {
+      width: 200px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--red), var(--gold), transparent);
+      margin: 0 auto 28px;
+      position: relative;
+    }
+    .divider::after {
+      content: '♦';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--dark); padding: 0 10px;
+      color: var(--gold); font-size: 1rem;
+    }
+
+    /* Corner decoration */
+    .corner { position: absolute; width: 15px; height: 15px; border-color: var(--gold); border-style: solid; opacity: .4; }
+    .corner.tl { top: 7px; left: 7px;   border-width: 2px 0 0 2px; }
+    .corner.tr { top: 7px; right: 7px;  border-width: 2px 2px 0 0; }
+    .corner.bl { bottom: 7px; left: 7px;  border-width: 0 0 2px 2px; }
+    .corner.br { bottom: 7px; right: 7px; border-width: 0 2px 2px 0; }
+
+    /* ============================================================
+       HOME SCREEN
+    ============================================================ */
+    .home-title  { text-align: center; margin-bottom: 35px; }
+    .home-title .cn {
+      display: block;
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 700;
+      color: var(--gold);
+      text-shadow: 0 0 30px rgba(255,215,0,.6), 0 0 80px rgba(255,215,0,.2);
+      animation: goldPulse 3s ease-in-out infinite;
+    }
+    .home-title .en {
+      display: block;
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: clamp(.7rem, 2vw, 1.1rem);
+      color: var(--gold-dim);
+      letter-spacing: 8px;
+      margin-top: 8px;
+    }
+    @keyframes goldPulse {
+      0%, 100% { text-shadow: 0 0 30px rgba(255,215,0,.6), 0 0 80px rgba(255,215,0,.2); }
+      50%       { text-shadow: 0 0 50px rgba(255,215,0,.9), 0 0 100px rgba(255,215,0,.4), 0 0 150px rgba(255,50,0,.2); }
+    }
+
+    .date-bar {
+      text-align: center; margin-bottom: 15px;
+      font-size: .8rem; color: rgba(255,215,0,.5); letter-spacing: 2px;
+    }
+
+    .buy-reminder {
+      display: none;
+      max-width: 620px; width: 100%;
+      padding: 12px 20px; margin-bottom: 22px;
+      text-align: center; font-size: .9rem;
+      background: linear-gradient(135deg, rgba(204,0,0,.3), rgba(255,50,0,.15));
+      border: 1px solid var(--red);
+      border-radius: 4px;
+      animation: reminderPulse 2s ease-in-out infinite;
+    }
+    .buy-reminder.show { display: block; }
+    @keyframes reminderPulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(204,0,0,.3); }
+      50%       { box-shadow: 0 0 25px rgba(255,50,0,.6), 0 0 50px rgba(255,50,0,.2); }
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 250px));
+      gap: 18px;
+      justify-content: center;
+      max-width: 820px; width: 100%;
+    }
+    .menu-card {
+      padding: 28px 20px; text-align: center;
+      cursor: pointer; position: relative; overflow: hidden;
+      border: 1px solid rgba(255,215,0,.25);
+      border-radius: 4px;
+      background: var(--panel);
+      transition: all .3s;
+    }
+    .menu-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,215,0,.05), transparent 60%);
+      opacity: 0; transition: opacity .3s;
+    }
+    .menu-card::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,.1), transparent);
+      transition: left .5s;
+    }
+    .menu-card:hover { border-color: var(--gold); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,.5), 0 0 30px rgba(255,215,0,.1); }
+    .menu-card:hover::before { opacity: 1; }
+    .menu-card:hover::after  { left: 100%; }
+    .menu-card .icon      { font-size: 2.8rem; display: block; margin-bottom: 10px; }
+    .menu-card .title-cn  { font-size: 1.3rem; font-weight: 700; color: var(--gold); display: block; }
+    .menu-card .title-en  { font-family: 'Cinzel Decorative', cursive; font-size: .58rem; color: var(--gold-dim); letter-spacing: 3px; display: block; margin-top: 4px; }
+    .menu-card .desc      { font-size: .78rem; color: rgba(255,215,0,.5); margin-top: 10px; line-height: 1.6; }
+
+    /* ============================================================
+       CALCULATOR SCREEN
+    ============================================================ */
+    .calc-panel { padding: 22px; width: 100%; max-width: 340px; }
+
+    .calc-display {
+      background: #050a03;
+      border: 1px solid rgba(0,255,136,.2);
+      border-radius: 2px;
+      padding: 14px 18px; margin-bottom: 16px;
+      min-height: 76px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      text-align: right;
+    }
+    .calc-display .expr   { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: rgba(0,255,136,.4); min-height: 18px; word-break: break-all; }
+    .calc-display .result { font-family: 'Share Tech Mono', monospace; font-size: 2rem; color: var(--green); text-shadow: 0 0 20px rgba(0,255,136,.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .kbd-hint { font-size: .68rem; color: rgba(255,215,0,.3); text-align: center; margin-bottom: 10px; letter-spacing: 1px; }
+
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+    .calc-btn {
+      padding: 16px 8px;
+      border: 1px solid rgba(255,215,0,.15);
+      background: rgba(255,215,0,.04);
+      color: var(--gold);
+      font-size: 1.05rem;
+      font-family: 'Share Tech Mono', monospace;
+      cursor: pointer; border-radius: 2px;
+      transition: all .1s; user-select: none;
+    }
+    .calc-btn:hover          { background: rgba(255,215,0,.12); border-color: rgba(255,215,0,.4); }
+    .calc-btn:active,
+    .calc-btn.pressed        { transform: scale(.94); background: rgba(255,215,0,.2); }
+    .calc-btn.op             { color: var(--red-bright); border-color: rgba(204,0,0,.2); }
+    .calc-btn.op:hover       { background: rgba(204,0,0,.12); border-color: var(--red-bright); }
+    .calc-btn.eq             { background: linear-gradient(135deg, var(--red), #880000); color: var(--gold); border-color: var(--red); font-size: 1.2rem; box-shadow: 0 4px 15px rgba(204,0,0,.3); }
+    .calc-btn.eq:hover       { background: linear-gradient(135deg, #ff2020, var(--red)); }
+    .calc-btn.clear          { color: var(--red-bright); }
+    .span2                   { grid-column: span 2; }
+
+    /* ============================================================
+       LUCKY 4D SCREEN
+    ============================================================ */
+    .lucky-panel { padding: 22px; width: 100%; max-width: 480px; }
+
+    .lucky-display {
+      background: #05050a;
+      border: 1px solid rgba(255,215,0,.18);
+      border-radius: 4px;
+      padding: 22px 16px; margin-bottom: 16px;
+      min-height: 115px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 13px;
+      text-align: center;
+    }
+    .lucky-number {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 3.8rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 10px;
+      text-shadow: 0 0 30px rgba(255,215,0,.7), 0 0 60px rgba(255,215,0,.3);
+      animation: numReveal .3s ease;
+    }
+    .lucky-number.rolling { color: rgba(255,215,0,.4); }
+    @keyframes numReveal { 0% { transform: scale(1.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+    .lucky-blessing {
+      font-size: .88rem; color: rgba(255,215,0,.75);
+      line-height: 1.8; border-top: 1px solid rgba(255,215,0,.1);
+      padding-top: 10px; width: 100%; min-height: 44px;
+    }
+
+    .btn-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 13px; }
+    .btn-gold {
+      padding: 13px;
+      border: 1px solid rgba(255,215,0,.3);
+      background: rgba(255,215,0,.06);
+      color: var(--gold);
+      font-family: 'Noto Serif SC', serif; font-size: .88rem;
+      cursor: pointer; border-radius: 2px; transition: all .2s;
+    }
+    .btn-gold:hover { background: rgba(255,215,0,.15); border-color: var(--gold); }
+    .btn-gold.full  { grid-column: span 2; }
+    .btn-red {
+      background: linear-gradient(135deg, var(--red), #880000);
+      border-color: var(--red); font-size: .95rem; padding: 15px;
+      color: var(--gold);
+    }
+    .btn-red:hover { background: linear-gradient(135deg, #ff2020, var(--red)); }
+
+    .multi-nums-wrap { display: none; margin-bottom: 13px; }
+    .multi-nums-wrap .label { font-size: .72rem; color: rgba(255,215,0,.5); margin-bottom: 7px; letter-spacing: 2px; }
+    .multi-nums { display: flex; flex-wrap: wrap; gap: 7px; }
+    .multi-num {
+      background: rgba(255,215,0,.07); border: 1px solid rgba(255,215,0,.2);
+      border-radius: 4px; padding: 9px 13px;
+      font-family: 'Share Tech Mono', monospace; font-size: 1.25rem;
+      color: var(--gold); letter-spacing: 5px;
+      cursor: pointer; transition: all .2s;
+    }
+    .multi-num:hover { border-color: var(--gold); background: rgba(255,215,0,.15); }
+
+    /* Lookup section */
+    .lookup-section { border-top: 1px solid rgba(255,215,0,.1); padding-top: 16px; margin-top: 4px; }
+    .lookup-section .section-title { font-size: .82rem; color: rgba(255,215,0,.6); letter-spacing: 2px; margin-bottom: 8px; }
+    .lookup-section .section-desc  { font-size: .74rem; color: rgba(255,215,0,.4); margin-bottom: 10px; line-height: 1.5; }
+
+    .input-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+    .num-input {
+      width: 120px; padding: 11px 10px;
+      background: rgba(0,0,0,.4); border: 1px solid rgba(255,215,0,.2);
+      color: var(--gold); font-family: 'Share Tech Mono', monospace;
+      font-size: 1.6rem; text-align: center; letter-spacing: 8px;
+      border-radius: 2px; flex-shrink: 0;
+    }
+    .num-input:focus { outline: none; border-color: var(--gold); }
+    .num-input::placeholder { color: rgba(255,215,0,.2); letter-spacing: 3px; font-size: 1rem; }
+
+    .btn-small {
+      font-size: .72rem; color: rgba(255,215,0,.5);
+      cursor: pointer; border: 1px solid rgba(255,215,0,.15);
+      border-radius: 2px; padding: 6px 10px;
+      background: rgba(255,215,0,.04); transition: all .2s; white-space: nowrap;
+    }
+    .btn-small:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,.08); }
+
+    /* 千字图 result */
+    .qzt-card {
+      display: none;
+      background: rgba(255,215,0,.04); border: 1px solid rgba(255,215,0,.2);
+      border-radius: 4px; padding: 16px; margin-bottom: 12px;
+      min-height: 80px;
+      flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      text-align: center;
+    }
+    .qzt-card.show        { display: flex; }
+    .qzt-card .qzt-label  { font-size: .65rem; color: rgba(255,215,0,.35); letter-spacing: 3px; text-transform: uppercase; }
+    .qzt-card .qzt-cn     { font-size: 1.8rem; font-weight: 700; color: var(--gold); letter-spacing: 6px; text-shadow: 0 0 20px rgba(255,215,0,.4); }
+    .qzt-card .qzt-en     { font-size: .9rem; color: rgba(255,215,0,.6); letter-spacing: 2px; text-transform: capitalize; }
+    .qzt-card .qzt-numtag { font-family: 'Share Tech Mono', monospace; font-size: .75rem; color: rgba(255,215,0,.3); margin-top: 2px; }
+    .qzt-card .qzt-msg    { font-size: .82rem; color: rgba(255,255,255,.3); }
+    .qzt-card .qzt-err    { font-size: .78rem; color: rgba(255,120,120,.6); }
+    .qzt-card .loading    { font-size: .85rem; color: rgba(255,215,0,.4); }
+
+    .ext-links-label { font-size: .7rem; color: rgba(255,215,0,.35); margin-bottom: 7px; letter-spacing: 1px; }
+    .ext-links { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; }
+    .ext-btn {
+      padding: 9px 5px; text-decoration: none; text-align: center;
+      display: flex; flex-direction: column; gap: 3px; align-items: center;
+      border: 1px solid rgba(255,215,0,.18); background: rgba(255,215,0,.03);
+      color: var(--gold); font-size: .7rem;
+      cursor: pointer; border-radius: 2px; transition: all .2s;
+    }
+    .ext-btn:hover      { border-color: var(--gold); background: rgba(255,215,0,.08); }
+    .ext-btn .ext-icon  { font-size: 1.1rem; }
+    .ext-btn .ext-name  { font-weight: 700; font-size: .75rem; }
+    .ext-btn .ext-sub   { font-size: .6rem; color: rgba(255,215,0,.4); }
+    .ext-note { font-size: .65rem; color: rgba(255,215,0,.25); text-align: center; margin-top: 7px; line-height: 1.5; }
+
+    /* ============================================================
+       NIU NIU SCREEN
+    ============================================================ */
+    .niuniu-panel { padding: 22px; width: 100%; max-width: 520px; }
+
+    .nn-rules {
+      background: rgba(255,215,0,.05);
+      border-left: 3px solid var(--gold);
+      padding: 11px 14px; margin-bottom: 18px;
+      font-size: .78rem; line-height: 1.8; color: rgba(255,215,0,.7);
+    }
+    .nn-rules strong { color: var(--gold); }
+
+    /* 3↔6 toggle */
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,215,0,.04);
+      border: 1px solid rgba(255,215,0,.15);
+      border-radius: 4px;
+      padding: 10px 14px; margin-bottom: 16px;
+    }
+    .toggle-label { font-size: .85rem; color: rgba(255,215,0,.7); }
+    .toggle-label span { font-size: .75rem; color: rgba(255,215,0,.4); display: block; margin-top: 2px; }
+    .toggle-switch { position: relative; width: 48px; height: 26px; cursor: pointer; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,.1); border-radius: 13px;
+      border: 1px solid rgba(255,215,0,.2);
+      transition: all .3s;
+    }
+    .toggle-track::after {
+      content: '';
+      position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      background: rgba(255,215,0,.5); border-radius: 50%;
+      transition: all .3s;
+    }
+    .toggle-switch input:checked + .toggle-track {
+      background: rgba(255,215,0,.2);
+      border-color: var(--gold);
+    }
+    .toggle-switch input:checked + .toggle-track::after {
+      transform: translateX(22px);
+      background: var(--gold);
+    }
+
+    .nn-section-label {
+      font-size: .83rem; color: rgba(255,215,0,.6); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nn-section-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,215,0,.1); }
+
+    /* Card slots */
+    .card-slots { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .card-slot {
+      width: 60px; height: 88px;
+      border: 2px dashed rgba(255,215,0,.2);
+      border-radius: 6px; background: rgba(0,0,0,.3);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      cursor: pointer; transition: all .2s;
+      color: rgba(255,215,0,.3);
+    }
+    .card-slot:hover        { border-color: var(--gold); color: var(--gold); }
+    .card-slot.filled       { border-style: solid; border-color: var(--gold); background: rgba(255,215,0,.05); }
+    .card-slot .slot-rank   { font-size: 1.3rem; font-weight: 700; line-height: 1; }
+    .card-slot .slot-suit   { font-size: .95rem; line-height: 1; }
+    .card-slot.suit-red  .slot-rank,
+    .card-slot.suit-red  .slot-suit  { color: var(--red-bright); }
+    .card-slot.suit-black .slot-rank,
+    .card-slot.suit-black .slot-suit { color: #eee; }
+    .card-slot.spade-ace   { border-color: var(--gold) !important; background: rgba(255,215,0,.1) !important; }
+    .card-slot.spade-ace .slot-rank,
+    .card-slot.spade-ace .slot-suit  { color: var(--gold); }
+
+    .nn-btn-row { display: flex; gap: 10px; margin-top: 13px; }
+    .btn-nn {
+      flex: 1; padding: 13px;
+      border: 1px solid rgba(255,215,0,.3);
+      background: rgba(255,215,0,.06);
+      color: var(--gold);
+      font-family: 'Noto Serif SC', serif; font-size: .92rem;
+      cursor: pointer; border-radius: 2px; transition: all .2s;
+    }
+    .btn-nn:hover        { background: rgba(255,215,0,.15); border-color: var(--gold); }
+    .btn-nn.btn-nn-main  { background: linear-gradient(135deg, var(--red), #770000); border-color: var(--red); color: var(--gold); }
+    .btn-nn.btn-nn-main:hover { background: linear-gradient(135deg, #ff2020, var(--red)); }
+
+    /* Result */
+    .nn-result { display: none; margin-top: 18px; background: #050505; border: 1px solid rgba(255,215,0,.15); border-radius: 4px; padding: 18px; }
+    .nn-result.show { display: block; }
+    .nn-result .result-label { font-size: .72rem; color: rgba(255,215,0,.5); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+    .nn-score { font-size: 2.4rem; font-weight: 700; text-align: center; padding: 8px; }
+    .nn-score.invalid  { color: rgba(255,255,255,.3); }
+    .nn-score.niu-none { color: #aaa; }
+    .nn-score.niu-low  { color: #88ff88; }
+    .nn-score.niu-high { color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,.5); }
+    .nn-score.niu-niu  { color: var(--red-bright); text-shadow: 0 0 30px rgba(255,50,0,.7); font-size: 2.8rem; }
+    .nn-score.special  { color: var(--gold); animation: specialGlow 1s ease-in-out infinite; }
+    @keyframes specialGlow {
+      0%, 100% { text-shadow: 0 0 20px var(--gold); }
+      50%       { text-shadow: 0 0 40px var(--gold), 0 0 80px rgba(255,50,0,.8), 0 0 120px var(--gold); }
+    }
+    .nn-detail { font-size: .78rem; color: rgba(255,215,0,.6); text-align: center; margin-top: 7px; }
+
+    .split-display { display: flex; gap: 10px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+    .split-group   { text-align: center; }
+    .split-label   { font-size: .68rem; color: rgba(255,215,0,.4); margin-bottom: 5px; }
+    .split-cards   { display: flex; gap: 4px; justify-content: center; }
+    .mini-card {
+      width: 30px; height: 44px;
+      border-radius: 3px; border: 1px solid rgba(255,255,255,.2);
+      background: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+      font-size: .68rem; font-weight: 700;
+    }
+    .mini-card.suit-red   { color: var(--red-bright); }
+    .mini-card.suit-black { color: #111; }
+    .mini-card .mc-rank   { font-size: .75rem; line-height: 1; }
+    .mini-card .mc-suit   { font-size: .65rem; line-height: 1; }
+
+    /* Card picker modal */
+    .picker-overlay { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.85); align-items: center; justify-content: center; }
+    .picker-overlay.open { display: flex; }
+    .picker-modal {
+      background: #1a0808; border: 1px solid rgba(255,215,0,.3);
+      border-radius: 8px; padding: 18px;
+      max-width: 370px; width: 90%; max-height: 80vh; overflow-y: auto;
+    }
+    .picker-header { font-size: .95rem; color: var(--gold); margin-bottom: 13px; display: flex; justify-content: space-between; align-items: center; }
+    .picker-close  { background: none; border: none; color: var(--gold); font-size: 1.5rem; cursor: pointer; }
+    .suit-group    { margin-bottom: 13px; }
+    .suit-name     { font-size: .77rem; color: rgba(255,215,0,.5); margin-bottom: 7px; }
+    .rank-grid     { display: flex; flex-wrap: wrap; gap: 5px; }
+    .rank-btn {
+      width: 42px; height: 52px;
+      border-radius: 4px; border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.05);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      cursor: pointer; font-size: .88rem; font-weight: 700;
+      transition: all .15s;
+    }
+    .rank-btn:hover          { transform: scale(1.1); border-color: var(--gold); }
+    .rank-btn.suit-red       { color: #ff4444; }
+    .rank-btn.suit-black     { color: #e8e8e8; }
+    .rank-btn .rb-suit       { font-size: .75rem; }
+    .rank-btn.used           { opacity: .2; pointer-events: none; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 480px) {
+      .calc-btn     { padding: 13px 6px; font-size: .95rem; }
+      .card-slot    { width: 52px; height: 78px; }
+      .lucky-number { font-size: 3rem; letter-spacing: 7px; }
+    }
+
+    /* ---------- Toast notification ---------- */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(20, 10, 5, 0.95);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: .9rem;
+      letter-spacing: 1px;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity .25s, transform .25s;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
 </head>
+
+<!-- ============================================================
+     HTML
+============================================================ -->
 <body>
-<div class="bgl"></div>
-<div class="bgp"></div>
-<div class="particles" id="particles"></div>
-<div class="lantern left"><svg class="lsvg" width="46" height="115" viewBox="0 0 50 120"><line x1="25" y1="0" x2="25" y2="15" stroke="#CC0000" stroke-width="2"/><ellipse cx="25" cy="55" rx="18" ry="40" fill="#CC0000" opacity=".9"/><ellipse cx="25" cy="55" rx="16" ry="38" fill="#FF2020" opacity=".6"/><line x1="7" y1="30" x2="43" y2="30" stroke="#FFD700" stroke-width="1.5"/><line x1="7" y1="80" x2="43" y2="80" stroke="#FFD700" stroke-width="1.5"/><ellipse cx="25" cy="55" rx="4" ry="4" fill="#FFD700" opacity=".8"/><line x1="22" y1="95" x2="18" y2="115" stroke="#CC0000" stroke-width="1.5"/><line x1="25" y1="95" x2="25" y2="118" stroke="#CC0000" stroke-width="1.5"/><line x1="28" y1="95" x2="32" y2="115" stroke="#CC0000" stroke-width="1.5"/></svg></div>
-<div class="lantern right"><svg class="lsvg" width="46" height="115" viewBox="0 0 50 120"><line x1="25" y1="0" x2="25" y2="15" stroke="#CC0000" stroke-width="2"/><ellipse cx="25" cy="55" rx="18" ry="40" fill="#CC0000" opacity=".9"/><ellipse cx="25" cy="55" rx="16" ry="38" fill="#FF2020" opacity=".6"/><line x1="7" y1="30" x2="43" y2="30" stroke="#FFD700" stroke-width="1.5"/><line x1="7" y1="80" x2="43" y2="80" stroke="#FFD700" stroke-width="1.5"/><ellipse cx="25" cy="55" rx="4" ry="4" fill="#FFD700" opacity=".8"/><line x1="22" y1="95" x2="18" y2="115" stroke="#CC0000" stroke-width="1.5"/><line x1="25" y1="95" x2="25" y2="118" stroke="#CC0000" stroke-width="1.5"/><line x1="28" y1="95" x2="32" y2="115" stroke="#CC0000" stroke-width="1.5"/></svg></div>
 
-<!-- HOME -->
-<div class="screen active" id="screen-home">
-  <div class="date-bar" id="home-date"></div>
-  <div class="buy-reminder" id="buy-reminder">🎰 今天是<strong id="r-day"></strong>，<strong>记得购买 4D！</strong> 今日开彩，祝你中大奖 🍀</div>
-  <div class="home-title">
-    <span class="cn">幸运计算</span>
-    <span class="en">Lucky Calculator Palace</span>
-  </div>
-  <div class="divider"></div>
-  <div class="menu-grid">
-    <div class="menu-card" onclick="showScreen('calc')">
-      <div class="cd tl"></div><div class="cd tr"></div><div class="cd bl"></div><div class="cd br"></div>
-      <span class="card-icon">🎰</span>
-      <span class="card-title-cn">普通计算器</span>
-      <span class="card-title-en">Standard Calculator</span>
-      <p class="card-desc">基础四则运算<br>⌨ 支持键盘输入</p>
-    </div>
-    <div class="menu-card" onclick="showScreen('lucky')">
-      <div class="cd tl"></div><div class="cd tr"></div><div class="cd bl"></div><div class="cd br"></div>
-      <span class="card-icon">🀄</span>
-      <span class="card-title-cn">幸运4D</span>
-      <span class="card-title-en">Lucky 4D Numbers</span>
-      <p class="card-desc">随机幸运号码 + 祝福语<br>千字图名称 + 历史查询</p>
-    </div>
-    <div class="menu-card" onclick="showScreen('niuniu')">
-      <div class="cd tl"></div><div class="cd tr"></div><div class="cd bl"></div><div class="cd br"></div>
-      <span class="card-icon">🃏</span>
-      <span class="card-title-cn">牛牛计算器</span>
-      <span class="card-title-en">Niu Niu Calculator</span>
-      <p class="card-desc">五张牌 自动算牛<br>黑桃A加JQK 天下无敌</p>
-    </div>
-  </div>
-  <div style="margin-top:30px;text-align:center;font-size:.72rem;color:rgba(255,215,0,.22);letter-spacing:2px;">新年快乐 · 恭喜发财 · 大吉大利</div>
-</div>
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
-<!-- CALCULATOR -->
-<div class="screen" id="screen-calc">
-  <div class="page-header" style="max-width:340px">
-    <button class="back-btn" onclick="showScreen('home')">← 返回</button>
-    <span class="page-title">🎰 计算器</span>
-  </div>
-  <div class="calc-wrap">
-    <div class="calc-display">
-      <div class="expr" id="cexpr"></div>
-      <div class="result" id="cresult">0</div>
-    </div>
-    <div class="kbd-hint">⌨ 键盘输入 · Enter = · Backspace ⌫ · Esc 清除</div>
-    <div class="calc-grid">
-      <button class="calc-btn clear span2" id="bac" onclick="cClear()">AC</button>
-      <button class="calc-btn op" id="bsgn" onclick="cSign()">+/−</button>
-      <button class="calc-btn op" id="bpct" onclick="cPct()">%</button>
-      <button class="calc-btn op" id="bdiv" onclick="cOp('÷')">÷</button>
-      <button class="calc-btn" id="b7" onclick="cNum('7')">7</button>
-      <button class="calc-btn" id="b8" onclick="cNum('8')">8</button>
-      <button class="calc-btn" id="b9" onclick="cNum('9')">9</button>
-      <button class="calc-btn op" id="bmul" onclick="cOp('×')">×</button>
-      <button class="calc-btn" id="b4" onclick="cNum('4')">4</button>
-      <button class="calc-btn" id="b5" onclick="cNum('5')">5</button>
-      <button class="calc-btn" id="b6" onclick="cNum('6')">6</button>
-      <button class="calc-btn op" id="bmin" onclick="cOp('−')">−</button>
-      <button class="calc-btn" id="b1" onclick="cNum('1')">1</button>
-      <button class="calc-btn" id="b2" onclick="cNum('2')">2</button>
-      <button class="calc-btn" id="b3" onclick="cNum('3')">3</button>
-      <button class="calc-btn op" id="badd" onclick="cOp('+')">+</button>
-      <button class="calc-btn span2" id="b0" onclick="cNum('0')">0</button>
-      <button class="calc-btn" id="bdot" onclick="cDot()">.</button>
-      <button class="calc-btn eq" id="beq" onclick="cEq()">=</button>
-    </div>
-  </div>
-</div>
+  <!-- Background layers -->
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+  <div class="particles" id="particles"></div>
 
-<!-- LUCKY 4D -->
-<div class="screen" id="screen-lucky">
-  <div class="page-header">
-    <button class="back-btn" onclick="showScreen('home')">← 返回</button>
-    <span class="page-title">🀄 幸运4D</span>
+  <!-- Lanterns -->
+  <div class="lantern left">
+    <svg width="46" height="115" viewBox="0 0 50 120">
+      <line x1="25" y1="0"  x2="25" y2="15" stroke="#CC0000" stroke-width="2"/>
+      <ellipse cx="25" cy="55" rx="18" ry="40" fill="#CC0000" opacity=".9"/>
+      <ellipse cx="25" cy="55" rx="16" ry="38" fill="#FF2020" opacity=".6"/>
+      <line x1="7"  y1="30" x2="43" y2="30" stroke="#FFD700" stroke-width="1.5"/>
+      <line x1="7"  y1="80" x2="43" y2="80" stroke="#FFD700" stroke-width="1.5"/>
+      <ellipse cx="25" cy="55" rx="4" ry="4" fill="#FFD700" opacity=".8"/>
+      <line x1="22" y1="95" x2="18" y2="115" stroke="#CC0000" stroke-width="1.5"/>
+      <line x1="25" y1="95" x2="25" y2="118" stroke="#CC0000" stroke-width="1.5"/>
+      <line x1="28" y1="95" x2="32" y2="115" stroke="#CC0000" stroke-width="1.5"/>
+    </svg>
   </div>
-  <div class="lucky-wrap">
-    <div class="lucky-display">
-      <div class="lucky-number" id="lnum">????</div>
-      <div class="lucky-blessing" id="lbless">按下按钮，获取你的幸运号码与祝福语 ✨</div>
-    </div>
-    <div class="lucky-grid">
-      <button class="lucky-btn big" onclick="rollLucky()">🎲 摇出幸运号码！</button>
-      <button class="lucky-btn" onclick="roll5()">再来5个号码</button>
-      <button class="lucky-btn" onclick="copyLucky()">📋 复制号码</button>
-    </div>
-    <div class="multi-wrap" id="multi-wrap">
-      <div class="multi-label">5个幸运号码（点击复制）</div>
-      <div class="multi-nums" id="multi-nums"></div>
-    </div>
+  <div class="lantern right">
+    <svg width="46" height="115" viewBox="0 0 50 120">
+      <line x1="25" y1="0"  x2="25" y2="15" stroke="#CC0000" stroke-width="2"/>
+      <ellipse cx="25" cy="55" rx="18" ry="40" fill="#CC0000" opacity=".9"/>
+      <ellipse cx="25" cy="55" rx="16" ry="38" fill="#FF2020" opacity=".6"/>
+      <line x1="7"  y1="30" x2="43" y2="30" stroke="#FFD700" stroke-width="1.5"/>
+      <line x1="7"  y1="80" x2="43" y2="80" stroke="#FFD700" stroke-width="1.5"/>
+      <ellipse cx="25" cy="55" rx="4" ry="4" fill="#FFD700" opacity=".8"/>
+      <line x1="22" y1="95" x2="18" y2="115" stroke="#CC0000" stroke-width="1.5"/>
+      <line x1="25" y1="95" x2="25" y2="118" stroke="#CC0000" stroke-width="1.5"/>
+      <line x1="28" y1="95" x2="32" y2="115" stroke="#CC0000" stroke-width="1.5"/>
+    </svg>
+  </div>
 
-    <!-- 千字图 + 历史查询 -->
-    <div class="lookup-section">
-      <div class="ls-title">📖 千字图 · 历史中奖查询</div>
-      <div class="ls-desc">输入号码，查看千字图名称（万字书）及点击外部网站查历史中奖记录。</div>
-      <div class="ls-row">
-        <input class="ls-input" id="ls-num" type="text" inputmode="numeric" maxlength="4" placeholder="0000"
-          oninput="this.value=this.value.replace(/\D/g,'').slice(0,4)">
-        <button class="use-lucky-btn" onclick="useLucky()">← 用当前幸运号码</button>
+  <!-- ==================== HOME ==================== -->
+  <div class="screen active" id="screen-home">
+    <div class="date-bar" id="home-date"></div>
+    <div class="buy-reminder" id="buy-reminder">
+      🎰 今天是<strong id="reminder-day"></strong>，<strong>记得购买 4D！</strong> 今日开彩，祝你中大奖 🍀
+    </div>
+    <div class="home-title">
+      <span class="cn">幸运计算</span>
+      <span class="en">Lucky Calculator Palace</span>
+    </div>
+    <div class="divider"></div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="showScreen('calc')">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <span class="icon">🎰</span>
+        <span class="title-cn">普通计算器</span>
+        <span class="title-en">Standard Calculator</span>
+        <p class="desc">基础四则运算<br>⌨ 支持键盘输入</p>
+      </div>
+      <div class="menu-card" onclick="showScreen('lucky')">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <span class="icon">🀄</span>
+        <span class="title-cn">幸运 4D</span>
+        <span class="title-en">Lucky 4D Numbers</span>
+        <p class="desc">随机幸运号码 + 祝福语<br>千字图名称 + 历史查询</p>
+      </div>
+      <div class="menu-card" onclick="showScreen('niuniu')">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <span class="icon">🃏</span>
+        <span class="title-cn">牛牛计算器</span>
+        <span class="title-en">Niu Niu Calculator</span>
+        <p class="desc">五张牌 自动算牛<br>支持 3↔6 互换模式</p>
+      </div>
+    </div>
+    <div style="margin-top:30px; text-align:center; font-size:.72rem; color:rgba(255,215,0,.22); letter-spacing:2px;">
+      新年快乐 · 恭喜发财 · 大吉大利
+    </div>
+  </div>
+
+  <!-- ==================== CALCULATOR ==================== -->
+  <div class="screen" id="screen-calc">
+    <div class="page-header" style="max-width:340px">
+      <button class="btn-back" onclick="showScreen('home')">← 返回</button>
+      <span class="page-title">🎰 计算器</span>
+    </div>
+    <div class="panel calc-panel">
+      <div class="calc-display">
+        <div class="expr"   id="calc-expr"></div>
+        <div class="result" id="calc-result">0</div>
+      </div>
+      <div class="kbd-hint">⌨ 键盘输入 · Enter = · Backspace ⌫ · Esc 清除</div>
+      <div class="calc-grid">
+        <button class="calc-btn clear span2" id="btn-ac"  onclick="cClear()">AC</button>
+        <button class="calc-btn op"          id="btn-sgn" onclick="cSign()">+/−</button>
+        <button class="calc-btn op"          id="btn-pct" onclick="cPct()">%</button>
+        <button class="calc-btn op"          id="btn-div" onclick="cOp('÷')">÷</button>
+        <button class="calc-btn"             id="btn-7"   onclick="cNum('7')">7</button>
+        <button class="calc-btn"             id="btn-8"   onclick="cNum('8')">8</button>
+        <button class="calc-btn"             id="btn-9"   onclick="cNum('9')">9</button>
+        <button class="calc-btn op"          id="btn-mul" onclick="cOp('×')">×</button>
+        <button class="calc-btn"             id="btn-4"   onclick="cNum('4')">4</button>
+        <button class="calc-btn"             id="btn-5"   onclick="cNum('5')">5</button>
+        <button class="calc-btn"             id="btn-6"   onclick="cNum('6')">6</button>
+        <button class="calc-btn op"          id="btn-min" onclick="cOp('−')">−</button>
+        <button class="calc-btn"             id="btn-1"   onclick="cNum('1')">1</button>
+        <button class="calc-btn"             id="btn-2"   onclick="cNum('2')">2</button>
+        <button class="calc-btn"             id="btn-3"   onclick="cNum('3')">3</button>
+        <button class="calc-btn op"          id="btn-add" onclick="cOp('+')">+</button>
+        <button class="calc-btn span2"       id="btn-0"   onclick="cNum('0')">0</button>
+        <button class="calc-btn"             id="btn-dot" onclick="cDot()">.</button>
+        <button class="calc-btn eq"          id="btn-eq"  onclick="cEq()">=</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LUCKY 4D ==================== -->
+  <div class="screen" id="screen-lucky">
+    <div class="page-header">
+      <button class="btn-back" onclick="showScreen('home')">← 返回</button>
+      <span class="page-title">🀄 幸运 4D</span>
+    </div>
+    <div class="panel lucky-panel">
+
+      <div class="lucky-display">
+        <div class="lucky-number" id="lucky-num">????</div>
+        <div class="lucky-blessing" id="lucky-blessing">按下按钮，获取你的幸运号码与祝福语 ✨</div>
       </div>
 
-      <!-- Result card -->
-      <div class="qzt-card" id="qzt-card">
-        <div class="qzt-loading" id="qzt-loading">🔍 查询中…</div>
-        <div id="qzt-content" style="display:none;flex-direction:column;align-items:center;gap:6px;">
-          <div class="qzt-label">千字图 · 万字图</div>
-          <div class="qzt-cn" id="qzt-cn"></div>
-          <div class="qzt-en" id="qzt-en"></div>
-          <div class="qzt-num" id="qzt-numdisp"></div>
+      <div class="btn-grid-2">
+        <button class="btn-gold btn-red full" onclick="rollLucky()">🎲 摇出幸运号码！</button>
+        <button class="btn-gold" onclick="roll5()">再来 5 个号码</button>
+        <button class="btn-gold" onclick="copyLucky()">📋 复制号码</button>
+      </div>
+
+      <div class="multi-nums-wrap" id="multi-nums-wrap">
+        <div class="label">5 个幸运号码（点击复制）</div>
+        <div class="multi-nums" id="multi-nums"></div>
+      </div>
+
+      <!-- 千字图 lookup -->
+      <div class="lookup-section">
+        <div class="section-title">📖 千字图 · 历史中奖查询</div>
+        <div class="section-desc">输入号码，查看千字图名称，或前往各彩票网站查询历史中奖记录。</div>
+        <div class="input-row">
+          <input class="num-input" id="lookup-num" type="text" inputmode="numeric"
+                 maxlength="4" placeholder="0000"
+                 oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4)" />
+          <button class="btn-small" onclick="useLucky()">← 用当前幸运号码</button>
         </div>
-        <div id="qzt-none" style="display:none;font-size:.82rem;color:rgba(255,255,255,.3);">此号码暂无千字图名称</div>
-        <div id="qzt-err" style="display:none;font-size:.78rem;color:rgba(255,120,120,.6);">查询失败，请稍后再试</div>
+
+        <div class="qzt-card" id="qzt-card">
+          <!-- content injected by JS -->
+        </div>
+
+        <div class="btn-grid-2" style="margin-bottom:10px;">
+          <button class="btn-gold full" onclick="lookupQzt()">📖 查询千字图名称（万字书）</button>
+        </div>
+
+        <div class="btn-grid-2" style="margin-bottom:10px;">
+          <button class="btn-gold full" onclick="goExt('toto')">📖 查询千字图名称（万字书）</button>
+        </div>
+        <div class="ext-note">⚠ 将跳转至官方或第三方权威查询网站 · 历史记录以官方为准</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NIU NIU ==================== -->
+  <div class="screen" id="screen-niuniu">
+    <div class="page-header">
+      <button class="btn-back" onclick="showScreen('home')">← 返回</button>
+      <span class="page-title">🃏 牛牛计算器</span>
+    </div>
+    <div class="panel niuniu-panel">
+
+      <div class="nn-rules">
+        <strong>规则：</strong>5 张牌拆成<strong>底 3 张 + 上 2 张</strong>。
+        底 3 张之和必须为 <strong>10 的整数倍</strong>。
+        J / Q / K 算 <strong>10 点</strong>，A 算 <strong>1 点</strong>。
+        上 2 张之和个位数即为牛几。<br>
+        <strong>特殊：</strong>黑桃 A + 任意 J/Q/K，且底 3 张整数 = <strong>♠A 天王牌</strong> ✦
       </div>
 
-      <div class="ls-btns">
-        <button class="ls-search-btn" onclick="lookupQzt()">
-          📖 查询千字图名称（万字书）
-        </button>
+      <!-- 3↔6 swap toggle -->
+      <div class="toggle-row">
+        <div class="toggle-label">
+          3 ↔ 6 灵活模式
+          <span>开启后：计算时 3 和 6 自动选最优值</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-36" onchange="nnReset(); refreshAllSlots();" />
+          <div class="toggle-track"></div>
+        </label>
       </div>
 
-      <div class="ext-links-label">🔍 前往外部网站查历史中奖记录：</div>
-      <div class="ext-links">
-        <a class="ext-btn" href="#" onclick="return goExt('magnum')">
-          <span class="ei">🔴</span><span class="en2">Magnum 4D</span><span class="ed">官方网站</span>
-        </a>
-        <a class="ext-btn" href="#" onclick="return goExt('toto')">
-          <span class="ei">🔵</span><span class="en2">Sports Toto</span><span class="ed">check4d.org</span>
-        </a>
-        <a class="ext-btn" href="#" onclick="return goExt('damacai')">
-          <span class="ei">🟢</span><span class="en2">Da Ma Cai</span><span class="ed">check4d.org</span>
-        </a>
+      <div class="nn-section-label">选择你的 5 张牌</div>
+      <div class="card-slots" id="card-slots"></div>
+
+      <div class="nn-btn-row">
+        <button class="btn-nn"          onclick="nnReset()">重新选牌</button>
+        <button class="btn-nn btn-nn-main" onclick="nnCalc()">计算牛牛 ▶</button>
       </div>
-      <div class="ext-note">⚠ 将跳转至官方或第三方权威查询网站 · 历史记录以官方为准</div>
+
+      <div class="nn-result" id="nn-result">
+        <div class="result-label">计算结果</div>
+        <div class="nn-score"  id="nn-score"></div>
+        <div class="nn-detail" id="nn-detail"></div>
+        <div class="split-display" id="nn-split"></div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- NIU NIU -->
-<div class="screen" id="screen-niuniu">
-  <div class="page-header">
-    <button class="back-btn" onclick="showScreen('home')">← 返回</button>
-    <span class="page-title">🃏 牛牛计算器</span>
-  </div>
-  <div class="niuniu-wrap">
-    <div class="nn-inst">
-      <strong>规则：</strong>5张牌拆成下3张 + 上2张。下3张之和必须为<strong>10的整数倍</strong>。J/Q/K算<strong>10点</strong>，A算1点。上2张之和个位数即为牛X。<strong>特殊：</strong>黑桃A + 任意JQK = <strong>♠A 天王牌</strong> ✦
-    </div>
-    <div class="nn-label">选择你的5张牌</div>
-    <div class="card-selector" id="card-slots"></div>
-    <div class="nn-ctrl">
-      <button class="nn-btn" onclick="nnReset()">重新选牌</button>
-      <button class="nn-btn primary" onclick="nnCalc()">计算牛牛 ▶</button>
-    </div>
-    <div class="nn-result" id="nn-result">
-      <div class="r-title">计算结果</div>
-      <div class="r-score" id="nn-score"></div>
-      <div class="r-detail" id="nn-detail"></div>
-      <div class="split-display" id="nn-split"></div>
+  <!-- Card picker modal -->
+  <div class="picker-overlay" id="picker-overlay" onclick="closePicker(event)">
+    <div class="picker-modal" onclick="event.stopPropagation()">
+      <div class="picker-header">
+        <span>选牌 · 第 <span id="picker-slot-num">1</span> 张</span>
+        <button class="picker-close" onclick="closePicker()">×</button>
+      </div>
+      <div id="picker-suits"></div>
     </div>
   </div>
-</div>
 
-<div class="picker-overlay" id="picker-overlay" onclick="closePicker(event)">
-  <div class="picker-modal" onclick="event.stopPropagation()">
-    <div class="picker-title">
-      <span>选牌 · 第 <span id="pslot">1</span> 张</span>
-      <button class="picker-close" onclick="closePicker()">×</button>
-    </div>
-    <div id="picker-suits"></div>
-  </div>
-</div>
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    /* ─────────────────────────────────────────────────────────────
+       CONFIG
+    ───────────────────────────────────────────────────────────── */
+    const PROXY_URL = 'https://vercel-proxy-chi-coral.vercel.app/api/search';
 
-<script>
-// PARTICLES
-['🀄','♠','♥','♦','♣','💰','🧧','🎊','✨','🌟','🍀'].forEach(e=>{
-  for(let j=0;j<2;j++){
-    const p=document.createElement('div');p.className='particle';p.textContent=e;
-    p.style.cssText=`left:${Math.random()*100}%;animation-duration:${8+Math.random()*12}s;animation-delay:${-Math.random()*15}s;font-size:${0.8+Math.random()*1.1}rem`;
-    document.getElementById('particles').appendChild(p);
-  }
-});
-
-// DATE + BUY REMINDER
-const DCNS=['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
-(()=>{
-  const now=new Date(),dow=now.getDay();
-  document.getElementById('home-date').textContent=now.toLocaleDateString('zh-MY',{year:'numeric',month:'long',day:'numeric'})+' · '+DCNS[dow];
-  if([0,3,6].includes(dow)){
-    document.getElementById('buy-reminder').classList.add('show');
-    document.getElementById('r-day').textContent=DCNS[dow];
-  }
-})();
-
-// NAV
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+id).classList.add('active');
-}
-
-// ===== CALCULATOR =====
-let cs={expr:'',cur:'0',op:null,prev:null,eval:false};
-const upd=()=>{document.getElementById('cresult').textContent=cs.cur;document.getElementById('cexpr').textContent=cs.expr};
-function cNum(n){if(cs.eval){cs.cur='0';cs.expr='';cs.eval=false}if(cs.cur==='0'&&n!=='.')cs.cur=n;else if(cs.cur.length<14)cs.cur+=n;upd()}
-function cDot(){if(!cs.cur.includes('.'))cNum('.')}
-function cOp(o){cs.eval=false;if(cs.prev!==null&&cs.op){const r=cmp(cs.prev,parseFloat(cs.cur),cs.op);cs.prev=r;cs.cur=fmt(r)}else cs.prev=parseFloat(cs.cur);cs.op=o;cs.expr=cs.cur+' '+o;cs.cur='0';upd()}
-function cEq(){if(cs.prev===null||!cs.op)return;const r=cmp(cs.prev,parseFloat(cs.cur),cs.op);cs.expr='';cs.cur=fmt(r);cs.prev=null;cs.op=null;cs.eval=true;upd()}
-function cmp(a,b,o){return o==='+'?a+b:o==='−'?a-b:o==='×'?a*b:b===0?'Error':a/b}
-function fmt(n){if(n==='Error')return'Error';return parseFloat(n.toFixed(10)).toString()}
-function cClear(){cs={expr:'',cur:'0',op:null,prev:null,eval:false};upd()}
-function cSign(){if(cs.cur!=='0'&&cs.cur!=='Error'){cs.cur=(parseFloat(cs.cur)*-1).toString();upd()}}
-function cPct(){if(cs.cur!=='Error'){cs.cur=(parseFloat(cs.cur)/100).toString();upd()}}
-function cBksp(){cs.cur=cs.cur.length>1?cs.cur.slice(0,-1):'0';upd()}
-function flashBtn(id){const b=document.getElementById(id);if(b){b.classList.add('pressed');setTimeout(()=>b.classList.remove('pressed'),120)}}
-document.addEventListener('keydown',e=>{
-  if(!document.getElementById('screen-calc').classList.contains('active'))return;
-  const k=e.key;
-  if(k>='0'&&k<='9'){cNum(k);flashBtn('b'+k)}
-  else if(k==='.'){cDot();flashBtn('bdot')}
-  else if(k==='+'||k==='Add'){cOp('+');flashBtn('badd')}
-  else if(k==='-'||k==='Subtract'){cOp('−');flashBtn('bmin')}
-  else if(k==='*'||k==='Multiply'){cOp('×');flashBtn('bmul')}
-  else if(k==='/'||k==='Divide'){e.preventDefault();cOp('÷');flashBtn('bdiv')}
-  else if(k==='Enter'||k==='='){cEq();flashBtn('beq')}
-  else if(k==='Backspace'){cBksp();flashBtn('bac')}
-  else if(k==='Escape'){cClear();flashBtn('bac')}
-  else if(k==='%'){cPct();flashBtn('bpct')}
-});
-
-// ===== LUCKY 4D =====
-const BLESS=[
-  ['大吉大利，今晚吃鸡！🍗','愿这组号码带给你意想不到的惊喜！'],
-  ['财神到！财神到！好运跟着你跑！💰','万事如意，横财就手！'],
-  ['恭喜发财，鸿运当头！🎊','这号码沾满了新年好运，快去买！'],
-  ['五福临门，六六大顺！🎋','买了这号码，好运绕身不离去。'],
-  ['天降横财，心想事成！🌟','此刻的感觉就是——中了！'],
-  ['龙马精神，万事亨通！🐉','富贵荣华，财源广进！'],
-  ['今日行运，锦上添花！🍀','福星高照，吉祥如意！'],
-  ['开门红，步步高升！🌹','好彩头就在今天，抓住机会！'],
-  ['好运连连，彩票连庄！🎴','这号码上次也赢过……说不定！'],
-  ['出入平安，财运亨通！✨','愿你中头奖，请客吃饭别忘了我！'],
-  ['旺旺旺，旺财旺运旺到家！🏮','上天眷顾有缘人，你就是那个人！'],
-  ['黄金万两，家财万贯！💎','千里之行始于足下，万金之源始于今日！'],
-];
-const r4=()=>String(Math.floor(Math.random()*10000)).padStart(4,'0');
-let rollTimer=null,curLucky='????';
-
-function rollLucky(){
-  document.getElementById('multi-wrap').style.display='none';
-  resetQztCard();
-  const ne=document.getElementById('lnum'),be=document.getElementById('lbless');
-  let t=0;ne.className='lucky-number rolling';be.textContent='摇号中…';
-  clearInterval(rollTimer);
-  rollTimer=setInterval(()=>{
-    ne.textContent=r4();
-    if(++t>18){
-      clearInterval(rollTimer);
-      curLucky=r4();
-      ne.textContent=curLucky;
-      ne.className='lucky-number';
-      const b=BLESS[Math.floor(Math.random()*BLESS.length)];
-      be.textContent=b[0]+' '+b[1];
-      document.getElementById('ls-num').value=curLucky;
-      // Auto lookup 千字图 after roll
-      lookupQzt(true);
+    /* ─────────────────────────────────────────────────────────────
+       TOAST
+    ───────────────────────────────────────────────────────────── */
+    let toastTimer = null;
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
     }
-  },75);
-}
 
-function roll5(){
-  const nums=[r4(),r4(),r4(),r4(),r4()];
-  const c=document.getElementById('multi-nums');c.innerHTML='';
-  nums.forEach(n=>{
-    const d=document.createElement('div');d.className='multi-num';d.textContent=n;d.title='点击复制';
-    d.onclick=()=>{
-      navigator.clipboard.writeText(n).catch(()=>{});
-      d.style.borderColor='var(--gold)';d.style.background='rgba(255,215,0,.2)';
-      setTimeout(()=>{d.style.borderColor='rgba(255,215,0,.2)';d.style.background='rgba(255,215,0,.07)'},700);
-    };
-    c.appendChild(d);
-  });
-  document.getElementById('multi-wrap').style.display='block';
-}
-
-function copyLucky(){
-  if(curLucky==='????')return;
-  navigator.clipboard.writeText(curLucky).catch(()=>{});
-  const b=event.target,o=b.textContent;
-  b.textContent='✓ 已复制！';
-  setTimeout(()=>b.textContent=o,1500);
-}
-
-function useLucky(){
-  if(curLucky!=='????') document.getElementById('ls-num').value=curLucky;
-}
-
-// ===== 千字图 LOOKUP =====
-function resetQztCard(){
-  const card=document.getElementById('qzt-card');
-  card.classList.remove('show');
-  document.getElementById('qzt-loading').style.display='none';
-  document.getElementById('qzt-content').style.display='none';
-  document.getElementById('qzt-none').style.display='none';
-  document.getElementById('qzt-err').style.display='none';
-}
-
-async function lookupQzt(auto=false){
-  const raw=document.getElementById('ls-num').value.trim();
-  if(raw.length!==4){
-    if(!auto) alert('请输入完整的4位号码！');
-    return;
-  }
-  const num=raw.padStart(4,'0');
-  const card=document.getElementById('qzt-card');
-
-  // Show loading
-  resetQztCard();
-  card.classList.add('show');
-  document.getElementById('qzt-loading').style.display='block';
-
-  // ⚠️ 把下面的 URL 换成你的 Vercel 网址，例如:
-  // https://lucky-proxy.vercel.app/api/search
-  const PROXY_URL = 'https://vercel-proxy-chi-coral.vercel.app/api/search';
-
-  try {
-    const resp=await fetch(`${PROXY_URL}?num=${num}`,{signal:AbortSignal.timeout(12000)});
-    if(!resp.ok) throw new Error('HTTP '+resp.status);
-    const data=await resp.json();
-
-    document.getElementById('qzt-loading').style.display='none';
-
-    if(data.error){
-      throw new Error(data.error);
-    } else if(data.cn && data.cn!==num){
-      document.getElementById('qzt-cn').textContent=data.cn;
-      document.getElementById('qzt-en').textContent=data.en||'';
-      document.getElementById('qzt-numdisp').textContent='号码 '+num;
-      document.getElementById('qzt-content').style.display='flex';
-    } else {
-      document.getElementById('qzt-none').style.display='block';
-    }
-  } catch(err){
-    document.getElementById('qzt-loading').style.display='none';
-    document.getElementById('qzt-err').style.display='block';
-    document.getElementById('qzt-err').textContent='查询失败：'+
-      (err.name==='AbortError'?'连接超时，请稍后再试':'网络错误，请稍后再试');
-  }
-}
-
-function goExt(op){
-  const raw=document.getElementById('ls-num').value.trim();
-  if(raw.length!==4){alert('请先输入完整的4位号码！');return false;}
-  const num=raw.padStart(4,'0');
-  const urls={
-    magnum:`https://www.magnum4d.my/en/results/winning-history?number=${num}`,
-    toto:`https://www.check4d.org/4d-history`,
-    damacai:`https://www.check4d.org/4d-history`
-  };
-  window.open(urls[op],'_blank');
-  return false;
-}
-
-// ===== NIU NIU =====
-const RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-const SUITS=[
-  {name:'♠ 黑桃',sym:'♠',cls:'black-suit',color:'black'},
-  {name:'♥ 红心',sym:'♥',cls:'red-suit',color:'red'},
-  {name:'♦ 方块',sym:'♦',cls:'red-suit',color:'red'},
-  {name:'♣ 梅花',sym:'♣',cls:'black-suit',color:'black'}
-];
-let nnCards=[null,null,null,null,null],pslot=0;
-function initSlots(){
-  const c=document.getElementById('card-slots');c.innerHTML='';
-  for(let i=0;i<5;i++){
-    const s=document.createElement('div');s.className='card-slot';s.id='s'+i;
-    s.onclick=()=>openPicker(i);updSlot(s,null);c.appendChild(s);
-  }
-}
-function updSlot(el,card){
-  el.innerHTML='';
-  if(!card){el.innerHTML='<span style="font-size:1.4rem;color:rgba(255,215,0,.2)">+</span><span style="font-size:.62rem">点击</span>';el.className='card-slot';}
-  else{
-    const r=document.createElement('div');r.className='slot-rank';r.textContent=card.rank;
-    const s=document.createElement('div');s.className='slot-suit';s.textContent=card.suit.sym;
-    el.appendChild(r);el.appendChild(s);
-    el.className='card-slot selected '+card.suit.color;
-    if(card.rank==='A'&&card.suit.sym==='♠')el.classList.add('special-ace');
-  }
-}
-function openPicker(i){pslot=i;document.getElementById('pslot').textContent=i+1;rndPicker();document.getElementById('picker-overlay').classList.add('open')}
-function closePicker(e){if(!e||e.target===document.getElementById('picker-overlay'))document.getElementById('picker-overlay').classList.remove('open')}
-function getUsed(){return nnCards.filter(c=>c!==null).map(c=>c.rank+'_'+c.suit.sym)}
-function rndPicker(){
-  const used=getUsed();const c=document.getElementById('picker-suits');c.innerHTML='';
-  SUITS.forEach(suit=>{
-    const sec=document.createElement('div');sec.className='suit-section';
-    const t=document.createElement('div');t.className='suit-title';t.textContent=suit.name;sec.appendChild(t);
-    const grid=document.createElement('div');grid.className='rank-grid';
-    RANKS.forEach(rank=>{
-      const key=rank+'_'+suit.sym;
-      const btn=document.createElement('button');
-      btn.className='rank-btn '+suit.cls+(used.includes(key)?' disabled':'');
-      btn.innerHTML=`<span>${rank}</span><span class="rb-suit">${suit.sym}</span>`;
-      btn.onclick=()=>selCard(rank,suit);
-      grid.appendChild(btn);
+    /* ─────────────────────────────────────────────────────────────
+       PARTICLES
+    ───────────────────────────────────────────────────────────── */
+    ['🀄','♠','♥','♦','♣','💰','🧧','🎊','✨','🌟','🍀'].forEach(emoji => {
+      for (let i = 0; i < 2; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.textContent = emoji;
+        p.style.cssText = [
+          `left: ${Math.random() * 100}%`,
+          `animation-duration: ${8 + Math.random() * 12}s`,
+          `animation-delay: ${-Math.random() * 15}s`,
+          `font-size: ${0.8 + Math.random() * 1.1}rem`,
+        ].join('; ');
+        document.getElementById('particles').appendChild(p);
+      }
     });
-    sec.appendChild(grid);c.appendChild(sec);
-  });
-}
-function selCard(rank,suit){
-  nnCards[pslot]={rank,suit};
-  updSlot(document.getElementById('s'+pslot),{rank,suit});
-  document.getElementById('picker-overlay').classList.remove('open');
-  document.getElementById('nn-result').classList.remove('show');
-}
-function nnReset(){nnCards=[null,null,null,null,null];initSlots();document.getElementById('nn-result').classList.remove('show')}
-function cv(r){if(['J','Q','K'].includes(r))return 10;if(r==='A')return 1;return parseInt(r)}
-function nnCalc(){
-  if(nnCards.filter(c=>c!==null).length<5){alert('请先选满5张牌！');return}
-  if(nnCards.some(c=>c.rank==='A'&&c.suit.sym==='♠')&&nnCards.some(c=>['J','Q','K'].includes(c.rank))){
-    showR('special','♠A 天王牌','黑桃A + JQK = 天下无敌！',nnCards,null,null);return;
-  }
-  let best=null;
-  for(let i=0;i<5;i++)for(let j=i+1;j<5;j++)for(let k=j+1;k<5;k++){
-    const bot=[nnCards[i],nnCards[j],nnCards[k]],top=nnCards.filter((_,x)=>x!==i&&x!==j&&x!==k);
-    const bs=bot.reduce((s,c)=>s+cv(c.rank),0);
-    if(bs%10===0){
-      const ts=top.reduce((s,c)=>s+cv(c.rank),0),sc=ts%10;
-      const isBetter=!best||sc>best.sc||(sc===best.sc&&(top[0].rank===top[1].rank?1:0)>(best.top[0].rank===best.top[1].rank?1:0));
-      if(isBetter)best={sc,bot,top,bs,ts};
+
+    /* ─────────────────────────────────────────────────────────────
+       DATE + BUY REMINDER
+    ───────────────────────────────────────────────────────────── */
+    const DAY_NAMES = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+    const DRAW_DAYS = [0, 3, 6]; // Sun, Wed, Sat
+
+    (function initDate() {
+      const now = new Date();
+      const dow = now.getDay();
+      document.getElementById('home-date').textContent =
+        now.toLocaleDateString('zh-MY', { year: 'numeric', month: 'long', day: 'numeric' }) +
+        ' · ' + DAY_NAMES[dow];
+
+      if (DRAW_DAYS.includes(dow)) {
+        document.getElementById('buy-reminder').classList.add('show');
+        document.getElementById('reminder-day').textContent = DAY_NAMES[dow];
+      }
+    })();
+
+    /* ─────────────────────────────────────────────────────────────
+       SCREEN NAVIGATION
+    ───────────────────────────────────────────────────────────── */
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + id).classList.add('active');
     }
-  }
-  if(!best){showR('invalid','没有牛','无法凑成底三张整数倍',nnCards,null,null);return}
-  const{sc,bot,top,bs,ts}=best;
-  showR(sc===0?'niu10':sc>=9?'niu9':sc>=5?'niu1':'niu0',sc===0?'牛牛（10）':`牛 ${sc}`,`底三张之和: ${bs}（${bs/10}个10） | 上两张: ${ts} → 个位: ${sc}`,null,bot,top);
-}
-function showR(cls,label,detail,all,bot,top){
-  const rd=document.getElementById('nn-result');
-  document.getElementById('nn-score').className='r-score '+cls;
-  document.getElementById('nn-score').textContent=label;
-  document.getElementById('nn-detail').textContent=detail;
-  const sp=document.getElementById('nn-split');sp.innerHTML='';
-  if(bot&&top){sp.appendChild(mkGrp('底三张',bot));sp.appendChild(mkGrp('上两张',top))}
-  else if(all){sp.appendChild(mkGrp('五张牌',all))}
-  rd.classList.add('show');
-}
-function mkGrp(label,cards){
-  const g=document.createElement('div');g.className='split-group';
-  const l=document.createElement('div');l.className='split-label';l.textContent=label;
-  const r=document.createElement('div');r.className='split-cards';
-  cards.forEach(c=>{
-    const mc=document.createElement('div');
-    mc.className='mini-card '+(c.suit.color==='red'?'red':'black');
-    mc.innerHTML=`<span class="mc-r">${c.rank}</span><span class="mc-s">${c.suit.sym}</span>`;
-    r.appendChild(mc);
-  });
-  g.appendChild(l);g.appendChild(r);return g;
-}
-initSlots();
-</script>
+
+    /* ─────────────────────────────────────────────────────────────
+       CALCULATOR
+    ───────────────────────────────────────────────────────────── */
+    // justEvaled: did we just press =?
+    // lastOp / lastOperand: remember last op+operand for repeated =
+    let calc = { expr: '', cur: '0', op: null, prev: null, justEvaled: false, lastOp: null, lastOperand: null };
+
+    function calcUpdate() {
+      document.getElementById('calc-result').textContent = calc.cur;
+      document.getElementById('calc-expr').textContent   = calc.expr;
+    }
+
+    function cNum(n) {
+      if (calc.justEvaled) { calc.cur = '0'; calc.expr = ''; calc.justEvaled = false; }
+      if (calc.cur === '0' && n !== '.') calc.cur = n;
+      else if (calc.cur.length < 14)    calc.cur += n;
+      calcUpdate();
+    }
+    function cDot() { if (!calc.cur.includes('.')) cNum('.'); }
+    function cOp(op) {
+      calc.justEvaled = false;
+      if (calc.prev !== null && calc.op) {
+        const r = calcCompute(calc.prev, parseFloat(calc.cur), calc.op);
+        calc.prev = r; calc.cur = calcFmt(r);
+      } else {
+        calc.prev = parseFloat(calc.cur);
+      }
+      calc.op = op; calc.expr = calc.cur + ' ' + op; calc.cur = '0';
+      calcUpdate();
+    }
+    function cEq() {
+      if (calc.justEvaled) {
+        // Repeat last operation: e.g. 1+1= → =3 → =4
+        if (calc.lastOp && calc.lastOperand !== null) {
+          const r = calcCompute(parseFloat(calc.cur), calc.lastOperand, calc.lastOp);
+          calc.expr = `${calc.cur} ${calc.lastOp} ${calc.lastOperand} =`;
+          calc.cur  = calcFmt(r);
+          calcUpdate();
+        }
+        return;
+      }
+      if (calc.prev === null || !calc.op) return;
+      // Save op and operand before computing
+      calc.lastOp      = calc.op;
+      calc.lastOperand = parseFloat(calc.cur);
+      const r = calcCompute(calc.prev, calc.lastOperand, calc.op);
+      calc.expr = ''; calc.cur = calcFmt(r);
+      calc.prev = null; calc.op = null; calc.justEvaled = true;
+      calcUpdate();
+    }
+    function calcCompute(a, b, op) {
+      switch (op) {
+        case '+': return a + b;
+        case '−': return a - b;
+        case '×': return a * b;
+        case '÷': return b === 0 ? 'Error' : a / b;
+      }
+    }
+    function calcFmt(n) {
+      if (n === 'Error') return 'Error';
+      return parseFloat(n.toFixed(10)).toString();
+    }
+    function cClear()   { calc = { expr: '', cur: '0', op: null, prev: null, justEvaled: false }; calcUpdate(); }
+    function cSign()    { if (calc.cur !== '0' && calc.cur !== 'Error') { calc.cur = (parseFloat(calc.cur) * -1).toString(); calcUpdate(); } }
+    function cPct()     { if (calc.cur !== 'Error') { calc.cur = (parseFloat(calc.cur) / 100).toString(); calcUpdate(); } }
+    function cBksp()    { calc.cur = calc.cur.length > 1 ? calc.cur.slice(0, -1) : '0'; calcUpdate(); }
+
+    function calcFlash(id) {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      btn.classList.add('pressed');
+      setTimeout(() => btn.classList.remove('pressed'), 120);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('screen-calc').classList.contains('active')) return;
+      const k = e.key;
+      if (k >= '0' && k <= '9')               { cNum(k);   calcFlash('btn-' + k); }
+      else if (k === '.')                      { cDot();    calcFlash('btn-dot'); }
+      else if (k === '+' || k === 'Add')       { cOp('+');  calcFlash('btn-add'); }
+      else if (k === '-' || k === 'Subtract')  { cOp('−');  calcFlash('btn-min'); }
+      else if (k === '*' || k === 'Multiply')  { cOp('×');  calcFlash('btn-mul'); }
+      else if (k === '/' || k === 'Divide')    { e.preventDefault(); cOp('÷'); calcFlash('btn-div'); }
+      else if (k === 'Enter' || k === '=')     { cEq();     calcFlash('btn-eq'); }
+      else if (k === 'Backspace')              { cBksp();   calcFlash('btn-ac'); }
+      else if (k === 'Escape')                 { cClear();  calcFlash('btn-ac'); }
+      else if (k === '%')                      { cPct();    calcFlash('btn-pct'); }
+    });
+
+    /* ─────────────────────────────────────────────────────────────
+       LUCKY 4D
+    ───────────────────────────────────────────────────────────── */
+    const BLESSINGS = [
+      ['大吉大利，今晚吃鸡！🍗',       '愿这组号码带给你意想不到的惊喜！'],
+      ['财神到！好运跟着你跑！💰',      '万事如意，横财就手！'],
+      ['恭喜发财，鸿运当头！🎊',        '这号码沾满了新年好运，快去买！'],
+      ['五福临门，六六大顺！🎋',        '买了这号码，好运绕身不离去。'],
+      ['天降横财，心想事成！🌟',        '此刻的感觉就是——中了！'],
+      ['龙马精神，万事亨通！🐉',        '富贵荣华，财源广进！'],
+      ['今日行运，锦上添花！🍀',        '福星高照，吉祥如意！'],
+      ['开门红，步步高升！🌹',          '好彩头就在今天，抓住机会！'],
+      ['好运连连，彩票连庄！🎴',        '这号码上次也赢过……说不定！'],
+      ['出入平安，财运亨通！✨',        '愿你中头奖，请客吃饭别忘了我！'],
+      ['旺旺旺，旺财旺运旺到家！🏮',   '上天眷顾有缘人，你就是那个人！'],
+      ['黄金万两，家财万贯！💎',        '万金之源始于今日！'],
+    ];
+
+    const rand4D   = () => String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+    let   rollTimer = null;
+    let   curLucky  = '????';
+
+    function rollLucky() {
+      document.getElementById('multi-nums-wrap').style.display = 'none';
+      resetQzt();
+
+      const numEl   = document.getElementById('lucky-num');
+      const blessEl = document.getElementById('lucky-blessing');
+      let ticks = 0;
+
+      numEl.className = 'lucky-number rolling';
+      blessEl.textContent = '摇号中…';
+      clearInterval(rollTimer);
+
+      rollTimer = setInterval(() => {
+        numEl.textContent = rand4D();
+        if (++ticks > 18) {
+          clearInterval(rollTimer);
+          curLucky = rand4D();
+          numEl.textContent = curLucky;
+          numEl.className   = 'lucky-number';
+
+          const b = BLESSINGS[Math.floor(Math.random() * BLESSINGS.length)];
+          blessEl.textContent = b[0] + ' ' + b[1];
+
+          document.getElementById('lookup-num').value = curLucky;
+          lookupQzt(true); // auto lookup after roll
+        }
+      }, 75);
+    }
+
+    function roll5() {
+      const nums = Array.from({ length: 5 }, rand4D);
+      const container = document.getElementById('multi-nums');
+      container.innerHTML = '';
+      nums.forEach(n => {
+        const el = document.createElement('div');
+        el.className   = 'multi-num';
+        el.textContent = n;
+        el.title       = '点击复制';
+        el.onclick     = () => {
+          navigator.clipboard.writeText(n)
+            .then(() => showToast('✓ 已复制 ' + n))
+            .catch(() => showToast('复制失败，请手动复制'));
+        };
+        container.appendChild(el);
+      });
+      document.getElementById('multi-nums-wrap').style.display = 'block';
+    }
+
+    function copyLucky() {
+      if (curLucky === '????') return;
+      navigator.clipboard.writeText(curLucky)
+        .then(() => showToast('✓ 已复制 ' + curLucky))
+        .catch(() => showToast('复制失败，请手动复制'));
+    }
+
+    function useLucky() {
+      if (curLucky !== '????') document.getElementById('lookup-num').value = curLucky;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       千字图 LOOKUP
+    ───────────────────────────────────────────────────────────── */
+    function resetQzt() {
+      const card = document.getElementById('qzt-card');
+      card.classList.remove('show');
+      card.innerHTML = '';
+    }
+
+    function qztShow(html) {
+      const card = document.getElementById('qzt-card');
+      card.innerHTML = html;
+      card.classList.add('show');
+    }
+
+    async function lookupQzt(auto = false) {
+      const raw = document.getElementById('lookup-num').value.trim();
+      if (raw.length !== 4) {
+        if (!auto) alert('请输入完整的 4 位号码！');
+        return;
+      }
+      const num = raw.padStart(4, '0');
+
+      qztShow('<span class="loading">🔍 查询中…</span>');
+
+      try {
+        const resp = await fetch(`${PROXY_URL}?num=${num}`, { signal: AbortSignal.timeout(12000) });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+
+        if (data.error) throw new Error(data.error);
+
+        if (data.cn && data.cn !== num) {
+          qztShow(`
+            <span class="qzt-label">千字图 · 万字图</span>
+            <span class="qzt-cn">${data.cn}</span>
+            <span class="qzt-en">${data.en || ''}</span>
+            <span class="qzt-numtag">号码 ${num}</span>
+          `);
+        } else {
+          qztShow('<span class="qzt-msg">此号码暂无千字图名称</span>');
+        }
+      } catch (err) {
+        const msg = err.name === 'AbortError' ? '连接超时，请稍后再试' : '网络错误，请稍后再试';
+        qztShow(`<span class="qzt-err">查询失败：${msg}</span>`);
+      }
+    }
+
+    function goExt(op) {
+      const raw = document.getElementById('lookup-num').value.trim();
+      if (raw.length !== 4) { alert('请先输入完整的 4 位号码！'); return false; }
+      const num = raw.padStart(4, '0');
+      const urls = {
+        magnum:  `https://www.magnum4d.my/en/results/winning-history?number=${num}`,
+        toto:    'https://www.check4d.org/4d-history',
+        damacai: 'https://www.check4d.org/4d-history',
+      };
+      window.open(urls[op], '_blank');
+      return false;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       NIU NIU
+    ───────────────────────────────────────────────────────────── */
+    const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+    const SUITS = [
+      { name: '♠ 黑桃', sym: '♠', css: 'suit-black', color: 'black' },
+      { name: '♥ 红心', sym: '♥', css: 'suit-red',   color: 'red'   },
+      { name: '♦ 方块', sym: '♦', css: 'suit-red',   color: 'red'   },
+      { name: '♣ 梅花', sym: '♣', css: 'suit-black', color: 'black' },
+    ];
+
+    let nnCards   = [null, null, null, null, null];
+    let pickerSlot = 0;
+
+    /* Card value — respects 3↔6 toggle */
+    function cardVal(rank) {
+      const swap36 = document.getElementById('toggle-36').checked;
+      if (['J','Q','K'].includes(rank)) return 10;
+      if (rank === 'A') return 1;
+      const v = parseInt(rank);
+      if (swap36) {
+        if (v === 3) return 6;
+        if (v === 6) return 3;
+      }
+      return v;
+    }
+
+    /* Display value shown on mini cards (what the card "becomes") */
+    function cardDisplayVal(rank) {
+      const swap36 = document.getElementById('toggle-36').checked;
+      if (!['3','6'].includes(rank) || !swap36) return rank;
+      return rank === '3' ? '6★' : '3★';
+    }
+
+    /* Slot init */
+    function initSlots() {
+      const container = document.getElementById('card-slots');
+      container.innerHTML = '';
+      for (let i = 0; i < 5; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'card-slot';
+        slot.id        = 'slot-' + i;
+        slot.onclick   = () => openPicker(i);
+        slot.innerHTML = '<span style="font-size:1.4rem;color:rgba(255,215,0,.2)">+</span><span style="font-size:.62rem">点击</span>';
+        container.appendChild(slot);
+      }
+    }
+
+    function renderSlot(idx) {
+      const el   = document.getElementById('slot-' + idx);
+      const card = nnCards[idx];
+      if (!card) {
+        el.className = 'card-slot';
+        el.innerHTML = '<span style="font-size:1.4rem;color:rgba(255,215,0,.2)">+</span><span style="font-size:.62rem">点击</span>';
+        return;
+      }
+      const swap36 = document.getElementById('toggle-36').checked;
+      const isSpadeA = card.rank === 'A' && card.suit.sym === '♠';
+      const displayRank = (swap36 && card.rank === '3') ? '6' : (swap36 && card.rank === '6') ? '3' : card.rank;
+
+      el.className = `card-slot filled ${card.suit.css}${isSpadeA ? ' spade-ace' : ''}`;
+      el.innerHTML = `<div class="slot-rank">${displayRank}${swap36 && ['3','6'].includes(card.rank) ? '<sup style="font-size:.5rem">★</sup>' : ''}</div><div class="slot-suit">${card.suit.sym}</div>`;
+    }
+
+    function refreshAllSlots() {
+      for (let i = 0; i < 5; i++) renderSlot(i);
+    }
+
+    /* Picker */
+    function openPicker(i) {
+      pickerSlot = i;
+      document.getElementById('picker-slot-num').textContent = i + 1;
+      renderPicker();
+      document.getElementById('picker-overlay').classList.add('open');
+    }
+
+    function closePicker(e) {
+      if (!e || e.target === document.getElementById('picker-overlay'))
+        document.getElementById('picker-overlay').classList.remove('open');
+    }
+
+    function getUsedKeys() {
+      return nnCards.filter(Boolean).map(c => c.rank + '_' + c.suit.sym);
+    }
+
+    function renderPicker() {
+      const used = getUsedKeys();
+      const container = document.getElementById('picker-suits');
+      container.innerHTML = '';
+
+      SUITS.forEach(suit => {
+        const sec   = document.createElement('div'); sec.className = 'suit-group';
+        const title = document.createElement('div'); title.className = 'suit-name'; title.textContent = suit.name;
+        sec.appendChild(title);
+
+        const grid = document.createElement('div'); grid.className = 'rank-grid';
+        RANKS.forEach(rank => {
+          const key = rank + '_' + suit.sym;
+          const btn = document.createElement('button');
+          btn.className = `rank-btn ${suit.css}${used.includes(key) ? ' used' : ''}`;
+          btn.innerHTML = `<span>${rank}</span><span class="rb-suit">${suit.sym}</span>`;
+          btn.onclick   = () => selectCard(rank, suit);
+          grid.appendChild(btn);
+        });
+
+        sec.appendChild(grid);
+        container.appendChild(sec);
+      });
+    }
+
+    function selectCard(rank, suit) {
+      nnCards[pickerSlot] = { rank, suit };
+      renderSlot(pickerSlot);
+      document.getElementById('picker-overlay').classList.remove('open');
+      document.getElementById('nn-result').classList.remove('show');
+    }
+
+    function nnReset() {
+      nnCards = [null, null, null, null, null];
+      initSlots();
+      document.getElementById('nn-result').classList.remove('show');
+    }
+
+    /* ── Main calculation ── */
+    function nnCalc() {
+      if (nnCards.filter(Boolean).length < 5) { alert('请先选满 5 张牌！'); return; }
+
+      const swap36 = document.getElementById('toggle-36').checked;
+
+      // Build list of which card indices can use alt value (3↔6 candidates)
+      // Each such card can be 0 (normal) or 1 (alt), giving up to 2^n combos
+      const altIdx = swap36
+        ? nnCards.map((c, i) => (['3','6'].includes(c.rank) ? i : -1)).filter(i => i >= 0)
+        : [];
+      const altCombos = 1 << altIdx.length; // 2^n
+
+      // Helper: get card value given alt mask
+      function getVal(cardIdx, altMask) {
+        const card = nnCards[cardIdx];
+        const altPos = altIdx.indexOf(cardIdx);
+        const useAlt = altPos >= 0 && (altMask >> altPos & 1) === 1;
+        return cardVal(card.rank, useAlt);
+      }
+
+      let best = null;
+
+      // Iterate all alt combos × all C(5,3) splits
+      for (let mask = 0; mask < altCombos; mask++) {
+        // Check special: ♠A + any J/Q/K
+        const spadeA  = nnCards.find(c => c.rank === 'A' && c.suit.sym === '♠');
+        const jqkCard = nnCards.find(c => ['J','Q','K'].includes(c.rank));
+
+        if (spadeA && jqkCard) {
+          const spadeAIdx = nnCards.indexOf(spadeA);
+          const jqkIdx    = nnCards.indexOf(jqkCard);
+          const botIdx    = [0,1,2,3,4].filter(i => i !== spadeAIdx && i !== jqkIdx);
+          const botSum    = botIdx.reduce((s, i) => s + getVal(i, mask), 0);
+          if (botSum % 10 === 0) {
+            // Record as special candidate with score Infinity
+            const altMap = {};
+            altIdx.forEach((ci, pos) => { altMap[ci] = (mask >> pos & 1) === 1; });
+            if (!best || best.score < Infinity) {
+              best = {
+                score: Infinity, botSum, topSum: 0,
+                bot: botIdx.map(i => nnCards[i]),
+                top: [spadeA, jqkCard],
+                altMap, special: true
+              };
+            }
+          }
+        }
+
+        // Normal C(5,3) splits
+        for (let i = 0; i < 5; i++) for (let j = i+1; j < 5; j++) for (let k = j+1; k < 5; k++) {
+          const botIdx = [i, j, k];
+          const topIdx = [0,1,2,3,4].filter(x => x !== i && x !== j && x !== k);
+          const botSum = botIdx.reduce((s, x) => s + getVal(x, mask), 0);
+          if (botSum % 10 !== 0) continue;
+          const topSum = topIdx.reduce((s, x) => s + getVal(x, mask), 0);
+          const score  = topSum % 10;
+          const isPair = nnCards[topIdx[0]].rank === nnCards[topIdx[1]].rank ? 1 : 0;
+          if (!best || score > best.score || (score === best.score && isPair > best.isPair)) {
+            const altMap = {};
+            altIdx.forEach((ci, pos) => { altMap[ci] = (mask >> pos & 1) === 1; });
+            best = {
+              score, isPair,
+              bot: botIdx.map(x => nnCards[x]),
+              top: topIdx.map(x => nnCards[x]),
+              botSum, topSum, altMap, special: false
+            };
+          }
+        }
+      }
+
+      if (!best) {
+        showResult('invalid', '没有牛', '无法凑成底三张整数倍', nnCards, null, null);
+        return;
+      }
+
+      if (best.special) {
+        showResult('special', '♠A 天王牌',
+          `底三张之和: ${best.botSum} ✓ | 黑桃A + JQK = 天下无敌！`,
+          null, best.bot, best.top, best.altMap);
+        return;
+      }
+
+      const { score, bot, top, botSum, topSum, altMap } = best;
+      const label  = score === 0 ? '牛牛（10）' : `牛 ${score}`;
+      const cls    = score === 0 ? 'niu-niu' : score >= 9 ? 'niu-high' : score >= 5 ? 'niu-low' : 'niu-none';
+      const detail = `底三张之和: ${botSum}（${botSum/10} 个 10）| 上两张: ${topSum} → 个位: ${score}`;
+      showResult(cls, label, detail, null, bot, top, altMap);
+    }
+
+    function showResult(cls, label, detail, allCards, bot, top, altMap = {}) {
+      document.getElementById('nn-score').className   = 'nn-score ' + cls;
+      document.getElementById('nn-score').textContent = label;
+      document.getElementById('nn-detail').textContent = detail;
+
+      const splitEl = document.getElementById('nn-split');
+      splitEl.innerHTML = '';
+      if (bot && top) {
+        splitEl.appendChild(makeSplitGroup('底三张', bot, altMap));
+        splitEl.appendChild(makeSplitGroup('上两张', top, altMap));
+      } else if (allCards) {
+        splitEl.appendChild(makeSplitGroup('五张牌', allCards, altMap));
+      }
+
+      document.getElementById('nn-result').classList.add('show');
+    }
+
+    function makeSplitGroup(label, cards, altMap = {}) {
+      const group = document.createElement('div'); group.className = 'split-group';
+      const lbl   = document.createElement('div'); lbl.className = 'split-label'; lbl.textContent = label;
+      const row   = document.createElement('div'); row.className = 'split-cards';
+
+      cards.forEach(card => {
+        const cardIdx  = nnCards.indexOf(card);
+        const useAlt   = altMap[cardIdx] === true;
+        const mc = document.createElement('div');
+        mc.className = `mini-card ${card.suit.color === 'red' ? 'suit-red' : 'suit-black'}`;
+        // Show actual computed rank; if alt used, show with asterisk
+        mc.innerHTML = `<span class="mc-rank">${card.rank}</span><span class="mc-suit">${card.suit.sym}</span>`;
+        row.appendChild(mc);
+      });
+
+      group.appendChild(lbl);
+      group.appendChild(row);
+      return group;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       INIT
+    ───────────────────────────────────────────────────────────── */
+    initSlots();
+  </script>
 </body>
 </html>
