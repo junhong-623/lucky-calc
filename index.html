@@ -703,9 +703,8 @@
         </div>
 
         <div class="btn-grid-2" style="margin-bottom:10px;">
-          <button class="btn-gold full" onclick="goExt('toto')">📖 查询千字图名称（万字书）</button>
+          <button class="btn-gold full" onclick="goHistory()">🔍 查询历史中奖记录</button>
         </div>
-        <div class="ext-note">⚠ 将跳转至官方或第三方权威查询网站 · 历史记录以官方为准</div>
       </div>
     </div>
   </div>
@@ -1050,17 +1049,8 @@
       }
     }
 
-    function goExt(op) {
-      const raw = document.getElementById('lookup-num').value.trim();
-      if (raw.length !== 4) { alert('请先输入完整的 4 位号码！'); return false; }
-      const num = raw.padStart(4, '0');
-      const urls = {
-        magnum:  `https://www.magnum4d.my/en/results/winning-history?number=${num}`,
-        toto:    'https://www.check4d.org/4d-history',
-        damacai: 'https://www.check4d.org/4d-history',
-      };
-      window.open(urls[op], '_blank');
-      return false;
+    function goHistory() {
+      window.open('https://www.check4d.org/4d-history', '_blank');
     }
 
     /* ─────────────────────────────────────────────────────────────
@@ -1119,12 +1109,9 @@
         el.innerHTML = '<span style="font-size:1.4rem;color:rgba(255,215,0,.2)">+</span><span style="font-size:.62rem">点击</span>';
         return;
       }
-      const swap36 = document.getElementById('toggle-36').checked;
       const isSpadeA = card.rank === 'A' && card.suit.sym === '♠';
-      const displayRank = (swap36 && card.rank === '3') ? '6' : (swap36 && card.rank === '6') ? '3' : card.rank;
-
       el.className = `card-slot filled ${card.suit.css}${isSpadeA ? ' spade-ace' : ''}`;
-      el.innerHTML = `<div class="slot-rank">${displayRank}${swap36 && ['3','6'].includes(card.rank) ? '<sup style="font-size:.5rem">★</sup>' : ''}</div><div class="slot-suit">${card.suit.sym}</div>`;
+      el.innerHTML = `<div class="slot-rank">${card.rank}</div><div class="slot-suit">${card.suit.sym}</div>`;
     }
 
     function refreshAllSlots() {
