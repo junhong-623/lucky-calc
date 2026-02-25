@@ -537,6 +537,152 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* ============================================================
+       4D ODDS CALCULATOR
+    ============================================================ */
+    .odds-panel { padding: 22px; width: 100%; max-width: 480px; }
+
+    .company-tabs { display: flex; gap: 6px; margin-bottom: 18px; }
+    .tab-btn {
+      flex: 1; padding: 9px 6px;
+      border: 1px solid rgba(255,215,0,.2);
+      background: rgba(255,215,0,.04);
+      color: rgba(255,215,0,.5);
+      font-family: 'Noto Serif SC', serif; font-size: .8rem;
+      cursor: pointer; border-radius: 2px; transition: all .2s;
+    }
+    .tab-btn.active { border-color: var(--gold); background: rgba(255,215,0,.12); color: var(--gold); }
+
+    .bet-type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .bet-type-btn {
+      padding: 10px;
+      border: 1px solid rgba(255,215,0,.2);
+      background: rgba(255,215,0,.04);
+      color: rgba(255,215,0,.5);
+      font-family: 'Noto Serif SC', serif; font-size: .82rem;
+      cursor: pointer; border-radius: 2px; transition: all .2s; text-align: center;
+    }
+    .bet-type-btn.active { border-color: var(--gold); background: rgba(255,215,0,.12); color: var(--gold); }
+    .bet-type-btn .bt-sub { font-size: .65rem; color: inherit; opacity: .7; display: block; margin-top: 2px; }
+
+    .odds-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .odds-field label { font-size: .72rem; color: rgba(255,215,0,.5); display: block; margin-bottom: 5px; letter-spacing: 1px; }
+    .odds-field input {
+      width: 100%; padding: 11px 12px;
+      background: rgba(0,0,0,.4); border: 1px solid rgba(255,215,0,.2);
+      color: var(--gold); font-family: 'Share Tech Mono', monospace; font-size: 1.1rem;
+      border-radius: 2px; transition: border-color .2s;
+    }
+    .odds-field input:focus { outline: none; border-color: var(--gold); }
+
+    .num-display-row {
+      background: rgba(255,215,0,.04); border: 1px solid rgba(255,215,0,.1);
+      border-radius: 4px; padding: 10px 14px; margin-bottom: 14px;
+      font-size: .78rem; color: rgba(255,215,0,.45); display: none;
+    }
+    .num-display-row.show { display: block; }
+
+    .odds-result-grid { display: none; margin-top: 4px; border: 1px solid rgba(255,215,0,.15); border-radius: 4px; overflow: hidden; }
+    .odds-result-grid.show { display: block; }
+    .odds-result-header {
+      display: grid; grid-template-columns: 1.6fr 1fr 1fr;
+      background: rgba(255,215,0,.08);
+      padding: 8px 12px; font-size: .7rem; color: rgba(255,215,0,.5); letter-spacing: 1px;
+    }
+    .odds-result-row {
+      display: grid; grid-template-columns: 1.6fr 1fr 1fr;
+      padding: 10px 12px; border-top: 1px solid rgba(255,215,0,.07);
+      font-size: .82rem;
+    }
+    .odds-result-row:hover { background: rgba(255,215,0,.04); }
+    .odds-result-row .prize-name { color: rgba(255,215,0,.65); font-size: .78rem; }
+    .odds-result-row .prize-amt  { color: var(--gold); font-family: 'Share Tech Mono', monospace; text-align: right; }
+    .odds-result-row .prize-amt.big-win { color: var(--red-bright); text-shadow: 0 0 10px rgba(255,50,0,.5); }
+    .odds-total { padding: 12px; border-top: 1px solid rgba(255,215,0,.2); background: rgba(255,215,0,.05); text-align: center; }
+    .odds-total .total-label { font-size: .72rem; color: rgba(255,215,0,.5); letter-spacing: 2px; }
+    .odds-total .total-amt   { font-family: 'Share Tech Mono', monospace; font-size: 1.5rem; color: var(--gold); margin-top: 4px; }
+    .odds-note { font-size: .67rem; color: rgba(255,215,0,.25); text-align: center; margin-top: 8px; line-height: 1.6; }
+
+    /* ============================================================
+       INTEREST CALCULATOR
+    ============================================================ */
+    .interest-panel { padding: 22px; width: 100%; max-width: 480px; }
+
+    .interest-mode-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 18px; }
+    .imode-btn {
+      padding: 10px 6px; text-align: center;
+      border: 1px solid rgba(255,215,0,.2); background: rgba(255,215,0,.04);
+      color: rgba(255,215,0,.5); font-family: 'Noto Serif SC', serif; font-size: .8rem;
+      cursor: pointer; border-radius: 2px; transition: all .2s;
+    }
+    .imode-btn .im-sub { font-size: .63rem; display: block; margin-top: 2px; opacity: .7; }
+    .imode-btn.active { border-color: var(--gold); background: rgba(255,215,0,.12); color: var(--gold); }
+
+    .interest-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .int-field label {
+      font-size: .72rem; color: rgba(255,215,0,.5); display: block; margin-bottom: 5px; letter-spacing: 1px;
+    }
+    .int-field input, .int-field select {
+      width: 100%; padding: 11px 12px;
+      background: rgba(0,0,0,.4); border: 1px solid rgba(255,215,0,.2);
+      color: var(--gold); font-family: 'Share Tech Mono', monospace; font-size: 1rem;
+      border-radius: 2px; transition: border-color .2s; -webkit-appearance: none; appearance: none;
+    }
+    .int-field input:focus, .int-field select:focus { outline: none; border-color: var(--gold); }
+    .int-field.full { grid-column: span 2; }
+
+    .int-result { display: none; border: 1px solid rgba(255,215,0,.15); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+    .int-result.show { display: block; }
+    .int-result-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 14px; border-bottom: 1px solid rgba(255,215,0,.07); font-size: .88rem;
+    }
+    .int-result-row:last-child { border-bottom: none; }
+    .int-result-row.total-row  { background: rgba(255,215,0,.06); }
+    .int-result-row .ir-label  { color: rgba(255,215,0,.55); font-size: .8rem; }
+    .int-result-row .ir-val    { font-family: 'Share Tech Mono', monospace; color: var(--gold); }
+    .int-result-row .ir-val.highlight { color: var(--red-bright); font-size: 1.1rem; }
+
+    .amort-toggle {
+      text-align: center; margin-top: 10px;
+      font-size: .75rem; color: rgba(255,215,0,.4); cursor: pointer;
+      text-decoration: underline; text-underline-offset: 3px; display: none;
+    }
+    .amort-toggle:hover { color: var(--gold); }
+    .amort-table-wrap { display: none; margin-top: 10px; max-height: 220px; overflow-y: auto; border-radius: 4px; }
+    .amort-table-wrap.show { display: block; }
+    .amort-table { width: 100%; border-collapse: collapse; font-size: .75rem; }
+    .amort-table th {
+      background: #1a0a0a; color: rgba(255,215,0,.7);
+      padding: 7px 8px; text-align: right; font-weight: normal; letter-spacing: 1px;
+      position: sticky; top: 0;
+      border-bottom: 1px solid rgba(255,215,0,.2);
+    }
+    .amort-table th:first-child { text-align: center; }
+    .amort-table td {
+      padding: 7px 8px; text-align: right;
+      border-top: 1px solid rgba(255,215,0,.06);
+      color: rgba(255,215,0,.8); font-family: 'Share Tech Mono', monospace;
+    }
+    .amort-table td:first-child { text-align: center; color: rgba(255,215,0,.4); }
+    .amort-table tr:hover td { background: rgba(255,215,0,.04); }
+
+    /* ---------- Music button ---------- */
+    .music-btn {
+      position: fixed; bottom: 22px; right: 22px; z-index: 50;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(20,5,5,.9);
+      border: 1px solid rgba(255,215,0,.35);
+      color: var(--gold); font-size: 1.15rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all .2s; box-shadow: 0 4px 15px rgba(0,0,0,.5);
+    }
+    .music-btn:hover { border-color: var(--gold); background: rgba(40,10,10,.95); transform: scale(1.08); }
+    .music-btn.muted { color: rgba(255,215,0,.3); border-color: rgba(255,215,0,.15); }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .music-btn .note { display: inline-block; }
+    .music-btn.playing .note { animation: spin 3s linear infinite; }
   </style>
 </head>
 
@@ -547,6 +693,14 @@
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
+
+  <!-- Music -->
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+  <button class="music-btn playing" id="music-btn" onclick="toggleMusic()" title="音乐开关">
+    <span class="note" id="music-note">🎵</span>
+  </button>
 
   <!-- Background layers -->
   <div class="bg-gradient"></div>
@@ -616,6 +770,22 @@
         <span class="title-cn">牛牛计算器</span>
         <span class="title-en">Niu Niu Calculator</span>
         <p class="desc">五张牌 自动算牛<br>支持 3↔6 互换模式</p>
+      </div>
+      <div class="menu-card" onclick="showScreen('odds')">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <span class="icon">💰</span>
+        <span class="title-cn">4D 赔率计算</span>
+        <span class="title-en">4D Payout Calculator</span>
+        <p class="desc">Big / Small / 4A 投注<br>Magnum · Toto · Damacai</p>
+      </div>
+      <div class="menu-card" onclick="showScreen('interest')">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <span class="icon">📊</span>
+        <span class="title-cn">利息计算器</span>
+        <span class="title-en">Interest Calculator</span>
+        <p class="desc">贷款 · 定存 · 民间借贷<br>年利率 / 月利率 均支持</p>
       </div>
     </div>
     <div style="margin-top:30px; text-align:center; font-size:.72rem; color:rgba(255,215,0,.22); letter-spacing:2px;">
@@ -702,9 +872,7 @@
           <button class="btn-gold full" onclick="lookupQzt()">📖 查询千字图名称（万字书）</button>
         </div>
 
-        <div class="btn-grid-2" style="margin-bottom:10px;">
-          <button class="btn-gold full" onclick="goHistory()">🔍 查询历史中奖记录</button>
-        </div>
+        <button class="btn-gold full" style="margin-top:4px" onclick="goHistory()">🔍 查询历史中奖记录</button>
       </div>
     </div>
   </div>
@@ -768,6 +936,124 @@
   <!-- ============================================================
        JAVASCRIPT
   ============================================================ -->
+<!-- ==================== 4D ODDS ==================== -->
+  <div class="screen" id="screen-odds">
+    <div class="page-header">
+      <button class="btn-back" onclick="showScreen('home')">← 返回</button>
+      <span class="page-title">💰 4D 赔率计算</span>
+    </div>
+    <div class="panel odds-panel">
+
+      <!-- Company tabs -->
+      <div class="company-tabs">
+        <button class="tab-btn active" id="tab-magnum" onclick="oddsSetCompany('magnum')">Magnum 4D</button>
+        <button class="tab-btn"        id="tab-toto"   onclick="oddsSetCompany('toto')">Sports Toto</button>
+        <button class="tab-btn"        id="tab-dmc"    onclick="oddsSetCompany('dmc')">Da Ma Cai</button>
+      </div>
+
+      <!-- Bet type -->
+      <div class="bet-type-row">
+        <button class="bet-type-btn active" id="bt-straight" onclick="oddsSetType('straight')">
+          Straight（直接号）
+          <span class="bt-sub">号码完全吻合</span>
+        </button>
+        <button class="bet-type-btn" id="bt-4a" onclick="oddsSetType('4a')">
+          4A / iBox（任何顺序）
+          <span class="bt-sub">任何排列都中</span>
+        </button>
+      </div>
+
+      <!-- 4A number input (for permutation calc) -->
+      <div class="num-display-row" id="odds-num-row">
+        <span style="color:rgba(255,215,0,.5);margin-right:8px;">号码（4位）：</span>
+        <input type="text" id="odds-num-input" inputmode="numeric" maxlength="4"
+               placeholder="1234" style="background:transparent;border:none;border-bottom:1px solid rgba(255,215,0,.3);color:var(--gold);font-family:'Share Tech Mono',monospace;font-size:1rem;width:80px;outline:none;padding:2px 4px;"
+               oninput="this.value=this.value.replace(/\D/g,'').slice(0,4); oddsCalc()" />
+        <span id="odds-perm-info" style="margin-left:12px;font-size:.75rem;color:rgba(255,215,0,.4);"></span>
+      </div>
+
+      <!-- Inputs -->
+      <div class="odds-input-row">
+        <div class="odds-field">
+          <label>投注金额 (RM)</label>
+          <input type="number" id="odds-bet" min="1" value="1" oninput="oddsCalc()" />
+        </div>
+        <div class="odds-field">
+          <label>投注类型</label>
+          <div style="display:flex;gap:6px;margin-top:5px;">
+            <button class="bet-type-btn active" id="bs-big"   onclick="oddsSetSize('big')"   style="flex:1;padding:10px 4px;">Big</button>
+            <button class="bet-type-btn"        id="bs-small" onclick="oddsSetSize('small')" style="flex:1;padding:10px 4px;">Small</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="odds-result-grid" id="odds-result-grid">
+        <div class="odds-result-header">
+          <span>奖项</span>
+          <span style="text-align:right">赔率 (RM1)</span>
+          <span style="text-align:right">你可赢 (RM)</span>
+        </div>
+        <div id="odds-rows"></div>
+        <div class="odds-total">
+          <div class="total-label">最高奖金（头奖）</div>
+          <div class="total-amt" id="odds-top-prize">-</div>
+        </div>
+      </div>
+      <div class="odds-note">
+        赔率以官方公布为准 · 实际派彩可能因特别情况略有差异<br>
+        Small 投注只参与头奖、二奖、三奖
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== INTEREST ==================== -->
+  <div class="screen" id="screen-interest">
+    <div class="page-header">
+      <button class="btn-back" onclick="showScreen('home')">← 返回</button>
+      <span class="page-title">📊 利息计算器</span>
+    </div>
+    <div class="panel interest-panel">
+
+      <!-- Mode -->
+      <div class="interest-mode-row">
+        <button class="imode-btn active" id="imode-loan" onclick="intSetMode('loan')">
+          贷款
+          <span class="im-sub">每月还多少</span>
+        </button>
+        <button class="imode-btn" id="imode-fd" onclick="intSetMode('fd')">
+          定期存款
+          <span class="im-sub">到期拿多少</span>
+        </button>
+        <button class="imode-btn" id="imode-flat" onclick="intSetMode('flat')">
+          民间借贷
+          <span class="im-sub">利滚利计算</span>
+        </button>
+      </div>
+
+      <!-- Fields -->
+      <div class="interest-fields" id="int-fields">
+        <!-- injected by JS based on mode -->
+      </div>
+
+      <button class="btn-gold full" style="margin-bottom:14px;" onclick="intCalc()">计算 ▶</button>
+
+      <!-- Result -->
+      <div class="int-result" id="int-result">
+        <!-- injected by JS -->
+      </div>
+
+      <div class="amort-toggle" id="amort-toggle" style="display:none" onclick="toggleAmort()">
+        展开还款计划表 ▾
+      </div>
+      <div class="amort-table-wrap" id="amort-wrap">
+        <table class="amort-table" id="amort-table"></table>
+      </div>
+
+    </div>
+  </div>
+
   <script>
     /* ─────────────────────────────────────────────────────────────
        CONFIG
@@ -785,6 +1071,35 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
     }
+
+    /* ─────────────────────────────────────────────────────────────
+       MUSIC
+    ───────────────────────────────────────────────────────────── */
+    function toggleMusic() {
+      const audio = document.getElementById('bg-music');
+      const btn   = document.getElementById('music-btn');
+      const note  = document.getElementById('music-note');
+      if (audio.paused) {
+        audio.play().catch(() => {});
+        btn.classList.add('playing');
+        btn.classList.remove('muted');
+        note.textContent = '🎵';
+      } else {
+        audio.pause();
+        btn.classList.remove('playing');
+        btn.classList.add('muted');
+        note.textContent = '🔇';
+      }
+    }
+
+    // Auto-play on first user interaction (browser policy)
+    document.addEventListener('click', function startMusic() {
+      const audio = document.getElementById('bg-music');
+      if (audio.paused && audio.src) {
+        audio.play().catch(() => {});
+      }
+      document.removeEventListener('click', startMusic);
+    }, { once: true });
 
     /* ─────────────────────────────────────────────────────────────
        PARTICLES
@@ -1300,10 +1615,330 @@
       return group;
     }
 
+
     /* ─────────────────────────────────────────────────────────────
-       INIT
+       4D ODDS CALCULATOR
     ───────────────────────────────────────────────────────────── */
-    initSlots();
+
+    // Payout tables per RM1 bet — [Big, Small]
+    // null = not applicable for that size
+    const ODDS = {
+      magnum: {
+        straight: [
+          { name: '头奖 1st',          big: 2500,  small: 3500  },
+          { name: '二奖 2nd',          big: 1000,  small: 2000  },
+          { name: '三奖 3rd',          big: 500,   small: 1000  },
+          { name: '特别奖 Special ×10', big: 180,   small: null  },
+          { name: '安慰奖 Consolation ×10', big: 60, small: null },
+        ]
+      },
+      toto: {
+        straight: [
+          { name: '头奖 1st',               big: 2500, small: 3500  },
+          { name: '二奖 2nd',               big: 1000, small: 2000  },
+          { name: '三奖 3rd',               big: 500,  small: 1000  },
+          { name: '特别奖 Special ×10',      big: 180,  small: null  },
+          { name: '安慰奖 Consolation ×10',  big: 60,   small: null  },
+        ]
+      },
+      dmc: {
+        straight: [
+          { name: '头奖 1st',               big: 2500, small: 3500  },
+          { name: '二奖 2nd',               big: 1000, small: 2000  },
+          { name: '三奖 3rd',               big: 500,  small: 1000  },
+          { name: '特别奖 Special ×10',      big: 160,  small: null  },
+          { name: '安慰奖 Consolation ×10',  big: 60,   small: null  },
+        ]
+      },
+    };
+
+    let oddsState = { company: 'magnum', type: 'straight', size: 'big' };
+
+    function oddsSetCompany(c) {
+      oddsState.company = c;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + c).classList.add('active');
+      oddsCalc();
+    }
+
+    function oddsSetType(t) {
+      oddsState.type = t;
+      document.querySelectorAll('.bet-type-btn[id^="bt-"]').forEach(b => b.classList.remove('active'));
+      document.getElementById('bt-' + t).classList.add('active');
+      // Show number input only for 4A
+      const numRow = document.getElementById('odds-num-row');
+      numRow.classList.toggle('show', t === '4a');
+      oddsCalc();
+    }
+
+    function oddsSetSize(s) {
+      oddsState.size = s;
+      document.querySelectorAll('.bet-type-btn[id^="bs-"]').forEach(b => b.classList.remove('active'));
+      document.getElementById('bs-' + s).classList.add('active');
+      oddsCalc();
+    }
+
+    // Count unique permutations of a 4-digit string
+    function countPerms(numStr) {
+      if (numStr.length !== 4) return 0;
+      const freq = {};
+      for (const d of numStr) freq[d] = (freq[d] || 0) + 1;
+      let denom = 1;
+      for (const k of Object.keys(freq)) {
+        let f = freq[k];
+        while (f > 1) denom *= f--;
+      }
+      return 24 / denom; // 4! / product of factorials
+    }
+
+    function oddsCalc() {
+      const bet    = parseFloat(document.getElementById('odds-bet').value) || 0;
+      const { company, type, size } = oddsState;
+      if (bet <= 0) return;
+
+      let multiplier = 1;
+      let permCount  = 1;
+      let actualBet  = bet;
+
+      if (type === '4a') {
+        const numStr = document.getElementById('odds-num-input').value;
+        permCount = numStr.length === 4 ? countPerms(numStr) : 0;
+        if (permCount === 0) {
+          document.getElementById('odds-result-grid').classList.remove('show');
+          return;
+        }
+        // 4A: payout divided by number of permutations
+        multiplier = 1 / permCount;
+        document.getElementById('odds-perm-info').textContent =
+          permCount + ' 种排列 · 每注 RM' + (bet / permCount).toFixed(2);
+      }
+
+      const prizes = ODDS[company].straight;
+      const rowsEl = document.getElementById('odds-rows');
+      rowsEl.innerHTML = '';
+      let topPrize = 0;
+
+      prizes.forEach(p => {
+        const rate = size === 'big' ? p.big : p.small;
+        if (rate === null) return; // not applicable for Small
+
+        // For 4A: effective payout = rate * bet / permCount
+        const payout = (rate * bet * multiplier);
+
+        const row = document.createElement('div');
+        row.className = 'odds-result-row';
+
+        const isTop = p.name.includes('头奖');
+        if (isTop) topPrize = payout;
+
+        row.innerHTML = `
+          <span class="prize-name">${p.name}</span>
+          <span class="prize-amt" style="text-align:right">× ${(rate * multiplier).toFixed(1)}</span>
+          <span class="prize-amt${isTop ? ' big-win' : ''}" style="text-align:right">RM ${payout.toLocaleString('en-MY', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+        `;
+        rowsEl.appendChild(row);
+      });
+
+      document.getElementById('odds-top-prize').textContent =
+        'RM ' + topPrize.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('odds-result-grid').classList.add('show');
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       INTEREST CALCULATOR
+    ───────────────────────────────────────────────────────────── */
+    let intMode = 'loan';
+
+    const INT_FIELDS = {
+      loan: [
+        { id: 'int-principal', label: '贷款总额 (RM)',   type: 'number', placeholder: '100000', full: false },
+        { id: 'int-rate',      label: '年利率 (%)',       type: 'number', placeholder: '3.5',    full: false },
+        { id: 'int-years',     label: '还款年限 (年)',    type: 'number', placeholder: '30',     full: false },
+        { id: 'int-ratemode',  label: '利率类型',        type: 'select',
+          options: [['annual','年利率 (p.a.)'], ['monthly','月利率']], full: false },
+      ],
+      fd: [
+        { id: 'int-principal', label: '存款金额 (RM)',   type: 'number', placeholder: '10000',  full: false },
+        { id: 'int-rate',      label: '年利率 (%)',       type: 'number', placeholder: '3.85',   full: false },
+        { id: 'int-months',    label: '存款期限 (月)',    type: 'number', placeholder: '12',     full: false },
+        { id: 'int-compound',  label: '利息方式',        type: 'select',
+          options: [['simple','单利（到期一次）'], ['compound','复利（每月滚入）']], full: false },
+      ],
+      flat: [
+        { id: 'int-principal', label: '借款金额 (RM)',   type: 'number', placeholder: '5000',   full: false },
+        { id: 'int-rate',      label: '月利率 (%)',       type: 'number', placeholder: '10',     full: false },
+        { id: 'int-months',    label: '借款期限 (月)',    type: 'number', placeholder: '6',      full: false },
+        { id: 'int-ratemode2', label: '计息方式',        type: 'select',
+          options: [['flat','平息（利息固定）'], ['compound','利滚利（复利）']], full: false },
+      ],
+    };
+
+    function intSetMode(m) {
+      intMode = m;
+      document.querySelectorAll('.imode-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('imode-' + m).classList.add('active');
+      renderIntFields();
+      document.getElementById('int-result').classList.remove('show');
+      document.getElementById('amort-toggle').style.display = 'none';
+      document.getElementById('amort-wrap').classList.remove('show');
+    }
+
+    function renderIntFields() {
+      const container = document.getElementById('int-fields');
+      container.innerHTML = '';
+      INT_FIELDS[intMode].forEach(f => {
+        const wrap = document.createElement('div');
+        wrap.className = 'int-field' + (f.full ? ' full' : '');
+        const lbl = document.createElement('label');
+        lbl.textContent = f.label;
+        wrap.appendChild(lbl);
+        if (f.type === 'select') {
+          const sel = document.createElement('select');
+          sel.id = f.id;
+          f.options.forEach(([val, txt]) => {
+            const opt = document.createElement('option');
+            opt.value = val; opt.textContent = txt;
+            sel.appendChild(opt);
+          });
+          wrap.appendChild(sel);
+        } else {
+          const inp = document.createElement('input');
+          inp.type = 'number'; inp.id = f.id;
+          inp.placeholder = f.placeholder; inp.min = '0'; inp.step = 'any';
+          wrap.appendChild(inp);
+        }
+        container.appendChild(wrap);
+      });
+    }
+
+    function intCalc() {
+      const principal = parseFloat(document.getElementById('int-principal')?.value) || 0;
+      const rate      = parseFloat(document.getElementById('int-rate')?.value) || 0;
+      if (principal <= 0 || rate <= 0) { showToast('请填写金额和利率'); return; }
+
+      const result = document.getElementById('int-result');
+      result.innerHTML = '';
+      document.getElementById('amort-toggle').style.display = 'none';
+      document.getElementById('amort-wrap').classList.remove('show');
+
+      function addRow(label, value, highlight = false, isTotal = false) {
+        const row = document.createElement('div');
+        row.className = 'int-result-row' + (isTotal ? ' total-row' : '');
+        row.innerHTML = `
+          <span class="ir-label">${label}</span>
+          <span class="ir-val${highlight ? ' highlight' : ''}">RM ${value}</span>
+        `;
+        result.appendChild(row);
+      }
+
+      const fmt = n => n.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      if (intMode === 'loan') {
+        const yearsEl  = document.getElementById('int-years');
+        const modeEl   = document.getElementById('int-ratemode');
+        const years    = parseFloat(yearsEl?.value) || 0;
+        const rateMode = modeEl?.value || 'annual';
+        if (years <= 0) { showToast('请填写还款年限'); return; }
+
+        const monthlyRate = rateMode === 'annual' ? rate / 100 / 12 : rate / 100;
+        const n           = years * 12;
+        // Standard reducing balance (annuity) formula
+        const monthly = monthlyRate === 0
+          ? principal / n
+          : principal * monthlyRate * Math.pow(1 + monthlyRate, n) / (Math.pow(1 + monthlyRate, n) - 1);
+        const totalPay  = monthly * n;
+        const totalInt  = totalPay - principal;
+
+        addRow('贷款总额',     fmt(principal));
+        addRow('每月还款',     fmt(monthly), true);
+        addRow('还款总额',     fmt(totalPay));
+        addRow('总利息',       fmt(totalInt), false, true);
+        result.classList.add('show');
+
+        // Amortization table
+        document.getElementById('amort-toggle').style.display = 'block';
+        const table = document.getElementById('amort-table');
+        table.innerHTML = `<tr>
+          <th>月</th><th>月供</th><th>利息</th><th>本金</th><th>余额</th>
+        </tr>`;
+        let balance = principal;
+        for (let i = 1; i <= n; i++) {
+          const intPart  = balance * monthlyRate;
+          const prinPart = monthly - intPart;
+          balance -= prinPart;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${i}</td><td>${fmt(monthly)}</td><td>${fmt(intPart)}</td><td>${fmt(prinPart)}</td><td>${fmt(Math.max(0, balance))}</td>`;
+          table.appendChild(tr);
+        }
+
+      } else if (intMode === 'fd') {
+        const monthsEl   = document.getElementById('int-months');
+        const compoundEl = document.getElementById('int-compound');
+        const months     = parseFloat(monthsEl?.value) || 0;
+        const compound   = compoundEl?.value === 'compound';
+        if (months <= 0) { showToast('请填写存款期限'); return; }
+
+        const monthlyRate = rate / 100 / 12;
+        let maturity;
+        if (compound) {
+          maturity = principal * Math.pow(1 + monthlyRate, months);
+        } else {
+          maturity = principal + principal * (rate / 100) * (months / 12);
+        }
+        const interest = maturity - principal;
+
+        addRow('存款金额',   fmt(principal));
+        addRow('存款期限',   months + ' 个月');
+        addRow('利息收入',   fmt(interest), true);
+        addRow('到期总额',   fmt(maturity), false, true);
+        result.classList.add('show');
+
+      } else if (intMode === 'flat') {
+        const monthsEl = document.getElementById('int-months');
+        const typeEl   = document.getElementById('int-ratemode2');
+        const months   = parseFloat(monthsEl?.value) || 0;
+        const isFlat   = typeEl?.value === 'flat';
+        if (months <= 0) { showToast('请填写借款期限'); return; }
+
+        let totalRepay, totalInterest;
+        if (isFlat) {
+          // Flat: interest = principal * monthlyRate * months (doesn't reduce)
+          totalInterest = principal * (rate / 100) * months;
+          totalRepay    = principal + totalInterest;
+          const monthly = totalRepay / months;
+          addRow('借款金额',     fmt(principal));
+          addRow('月利率',       rate + '%');
+          addRow('总利息',       fmt(totalInterest), true);
+          addRow('每月还款',     fmt(monthly));
+          addRow('还款总额',     fmt(totalRepay), false, true);
+        } else {
+          // Compound: balance = principal * (1 + rate%)^months
+          const maturity = principal * Math.pow(1 + rate / 100, months);
+          totalInterest  = maturity - principal;
+          addRow('借款金额',   fmt(principal));
+          addRow('月利率',     rate + '%');
+          addRow('利滚利总利息', fmt(totalInterest), true);
+          addRow('到期还款总额', fmt(maturity), false, true);
+        }
+        result.classList.add('show');
+      }
+    }
+
+    function toggleAmort() {
+      const wrap    = document.getElementById('amort-wrap');
+      const trigger = document.getElementById('amort-toggle');
+      const isShown = wrap.classList.toggle('show');
+      trigger.textContent = isShown ? '收起还款计划表 ▴' : '展开还款计划表 ▾';
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       INIT — wrapped in DOMContentLoaded so all DOM is ready
+    ───────────────────────────────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', function () {
+      initSlots();
+      renderIntFields();
+      oddsCalc();
+    });
   </script>
+
 </body>
-</html>
