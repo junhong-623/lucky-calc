@@ -698,8 +698,8 @@
   <audio id="bg-music" loop>
     <source src="music.mp3" type="audio/mpeg" />
   </audio>
-  <button class="music-btn playing" id="music-btn" onclick="toggleMusic()" title="音乐开关">
-    <span class="note" id="music-note">🎵</span>
+  <button class="music-btn muted" id="music-btn" onclick="toggleMusic()" title="点击播放音乐">
+    <span class="note" id="music-note">🔇</span>
   </button>
 
   <!-- Background layers -->
@@ -1092,14 +1092,7 @@
       }
     }
 
-    // Auto-play on first user interaction (browser policy)
-    document.addEventListener('click', function startMusic() {
-      const audio = document.getElementById('bg-music');
-      if (audio.paused && audio.src) {
-        audio.play().catch(() => {});
-      }
-      document.removeEventListener('click', startMusic);
-    }, { once: true });
+
 
     /* ─────────────────────────────────────────────────────────────
        PARTICLES
